@@ -59,4 +59,4 @@ npm run test:e2e
 - [10 张 Chen E-R 图](docs/engineering/ERD.md) · [实际迁移核对](docs/delivery/erd-verification.md)
 - [PRD](docs/product/PRD.md) · [SRS](docs/engineering/SRS.md) · [当前 DAG](docs/planning/DAG.md)
 
-本次范围不包含支付、快递、真实注册、即时私聊、多社区和用户图片上传。物品交接在线下完成，软件记录双方确认。最终 Issue / Epic 由协调者审阅材料、合并 PR 并核验 main CI 后关闭。
+本次范围不包含支付、快递、真实注册、即时私聊、多社区和用户图片上传。物品交接在线下完成，软件记录双方确认。最终材料已通过协调者独立审阅，PR #23 已合并为 `604a60a`，对应 main CI `36290725973` 成功；必需交付任务及 Epic #1 已验收关闭，可选部署 #13 未启动。

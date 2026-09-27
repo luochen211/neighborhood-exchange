@@ -77,17 +77,13 @@ flowchart LR
 
 ## 当前状态快照
 
-读取时刻：`2026-09-27T02:58:21+00:00`。历史 not_planned 任务不计入以下完成数。
+读取时刻：`2026-09-27T03:15:17.730486+00:00`。历史 not_planned 任务不计入以下完成数。
 
-Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 1 | Stale_Claim: 0 | Ready: 0 | Conflict: 0 | Blocked: 1 | Done: 5
+Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 0 | Stale_Claim: 0 | Ready: 1 | Conflict: 0 | Blocked: 0 | Done: 6
 
-### Claimed
+### Ready
 
-- #12 交付运行说明、ER 图、技术简介与演示视频 — codex/final-delivery；2026-09-27T02:58:21Z 认领，待 PR 验收；unlocks #13
-
-### Blocked
-
-- #13 可选：部署受控演示站并验证持久化 — blocked by #12
+- #13 可选：部署受控演示站并验证持久化
 
 ### Done
 
@@ -96,3 +92,4 @@ Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 1 | Stale_Claim: 0 | Ready: 0 | C
 - #4 实现完整后端 API、数据库与 LLM 服务 — unlocks #11; PR merged; checks success
 - #9 实现完整 Web 前端与独立 API 适配层 — unlocks #11; PR merged; checks success
 - #11 完成真实前后端联调与验收测试 — unlocks #12; PR merged; checks success
+- #12 交付运行说明、ER 图、技术简介与演示视频 — unlocks #13; PR merged; checks success
