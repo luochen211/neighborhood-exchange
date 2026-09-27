@@ -20,7 +20,7 @@ const suggestion = {
 const response = (value: unknown) =>
   new Response(
     JSON.stringify({
-      choices: [{ message: { content: JSON.stringify(value) } }],
+      choices: [{ finish_reason: "stop", message: { content: JSON.stringify(value) } }],
     }),
     { status: 200 },
   );
@@ -51,6 +51,38 @@ describe("LLM adapter (explicit stub; not real provider acceptance)", () => {
     expect(f.db.sqlite.prepare("SELECT count(*) n FROM items").get()).toEqual({
       n: 0,
     });
+  });
+  it.each([
+    ["https://api.deepseek.com", true],
+    ["https://api.deepseek.com/v1/", true],
+    ["https://api.deepseek.com.example/v1", false],
+    ["https://provider.example/v1", false],
+  ])("keeps DeepSeek non-thinking options scoped to its official origin: %s", async (base, deepseek) => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response(suggestion));
+    const f = await fixture({ config: { ...config, llmBaseUrl: base as string, llmModel: "deepseek-flash" }, fetcher });
+    const r = await f.call("assistListing", { body: input }, await f.login());
+    expect(r.statusCode).toBe(200);
+    const [url, options] = fetcher.mock.calls[0]!;
+    expect(url).toBe(`${String(base).replace(/\/+$/, "")}/chat/completions`);
+    expect(options?.redirect).toBe("error");
+    const sent = JSON.parse(options!.body as string);
+    expect(sent.response_format).toEqual({ type: "json_object" });
+    expect(sent.stream).toBe(false);
+    expect(sent.thinking).toEqual(deepseek ? { type: "disabled" } : undefined);
+  });
+  it.each(["length", "content_filter", "tool_calls"])("rejects incomplete completions even when content parses: %s", async (finish_reason) => {
+    const upstream = new Response(JSON.stringify({ choices: [{ finish_reason, message: { content: JSON.stringify(suggestion) } }] }));
+    const f = await fixture({ config, fetcher: async () => upstream });
+    const r = await f.call("assistListing", { body: input }, await f.login());
+    expect(r.statusCode).toBe(502);
+    expect(r.json().error.code).toBe("AI_INVALID_RESPONSE");
+  });
+  it.each(["", null])("rejects empty DeepSeek content without exposing reasoning", async (content) => {
+    const upstream = new Response(JSON.stringify({ choices: [{ finish_reason: "stop", message: { content, reasoning_content: "private reasoning" } }] }));
+    const f = await fixture({ config, fetcher: async () => upstream });
+    const r = await f.call("assistListing", { body: input }, await f.login());
+    expect(r.statusCode).toBe(502);
+    expect(r.body).not.toContain("private reasoning");
   });
   it.each([
     { ...suggestion, suggestedPriceRangeCents: { min: 1, max: 2 } },

@@ -77,3 +77,25 @@ HTTP 脚本要求先构建 contracts/api，自动创建临时持久化数据库�
 无配置 503 AI_NOT_CONFIGURED，上游/额度失败 503 AI_UNAVAILABLE，无效结构 502 AI_INVALID_RESPONSE，超时 504 AI_TIMEOUT，限流 429。错误不写物品，不伪造成功，手动发布保持可用。
 
 真实验收需协调者/#11 在服务端通过安全环境配置实际凭据，记录 provider/model、时间、输入/输出摘要与耗时（不记录 key）。本次只验证明确标注的 stub 成功、错误结构、上游失败、超时与限流；不请求用户在聊天粘贴密钥。
+
+## DeepSeek 接入（2026-09-27）
+
+继续使用现有 Chat Completions adapter，无新增 SDK 或 provider 架构。依据 [官方首次调用说明](https://api-docs.deepseek.com/zh-cn/)，配置 `LLM_BASE_URL=https://api.deepseek.com`、`LLM_MODEL=deepseek-flash`；API key 只在后端根目录 `.env` 本地填写。当前官方推荐此模型名，未沿用旧教程的 `deepseek-chat`。
+
+按 [JSON Output 文档](https://api-docs.deepseek.com/guides/json_mode/)，提示词包含 JSON 字样和格式样例；样例明确禁止套用到用户物品。按 [Chat Completions 参数文档](https://api-docs.deepseek.com/api/create-chat-completion/)，官方 DeepSeek HTTPS origin 的请求显式发送 `thinking: {type: "disabled"}`，避免默认思考消耗短文案的 1,600 token 预算和 15 秒时限；其他兼容服务不收到该专有参数。显式非流式响应，保留严格业务 schema、大小上限、取消、限流、无重试和手动发布路径；非 stop 的完成状态以及空 content 明确失败，不使用 reasoning_content 代替文案。
+
+### 唯一联调配置与真实验收
+
+本次多个任务统一使用协调工作区的 `/Users/luochen/Documents/Codex/2026-09-27/neighborhood-dag-coordinator/work/neighborhood-exchange/.env`。已确认文件权限 600、受 gitignore 保护；只补充原先为空的非秘密 base/model，不覆盖其他项，不创建第二份需要填密钥的文件。用户仅在该文件 `LLM_API_KEY=` 后本地填写，勿发聊天。生产/start/dev 从 apps/api 工作目录以 Node `--env-file-if-exists=../../.env` 加载根配置；填好后重启后端。已有 shell 同名环境变量优先于 env-file，启动时应避免遗留的旧配置。
+
+独立 clone 内执行以下命令（命令行只有配置文件路径，无密钥）：
+
+```sh
+npm run build -w @neighborhood/contracts
+npm run build -w @neighborhood/api
+node apps/api/scripts/llm-acceptance.mjs /Users/luochen/Documents/Codex/2026-09-27/neighborhood-dag-coordinator/work/neighborhood-exchange/.env
+```
+
+脚本只从指定文件解析配置，不回退到其他项目或环境中的凭据；限制官方 DeepSeek URL 和 `deepseek-flash`。密钥为空时返回 blocked、零请求和退出码 2。配置齐备后启用真实本地 HTTP、独立内存库和虚构身份，通过实际发布辅助端点最多发两次模型请求（标价电磁炉、免费木椅），首个失败即停止。输出仅含 provider/model、时间、固定输入摘要、响应结构/长度/方式/金额摘要、耗时与安全错误类别，不打印 key、Cookie、提示词、推理、上游正文或生成文案；不访问用户数据库，不保存物品。
+
+回归覆盖官方 base 与 `/v1/` URL、非官方相似域名不附加专有参数、截断/过滤/工具调用完成状态、空 content 与推理不泄露。真实成功证据以此脚本的实际运行结果及 #11 验收记录为准；stub 和无密钥 blocked 均不算真实调用通过。
