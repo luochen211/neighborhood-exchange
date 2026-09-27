@@ -15,6 +15,7 @@ import { interestsRoutes } from "./modules/interests/index.js";
 import { tradesRoutes } from "./modules/trades/index.js";
 import { dashboardRoutes } from "./modules/dashboard/index.js";
 import { aiRoutes } from "./modules/ai/index.js";
+import { timingSafeEqual, createHash } from "node:crypto";
 
 export interface AppOptions {
   logger?: FastifyServerOptions["logger"];
@@ -33,6 +34,19 @@ export async function buildApp(options: AppOptions = {}) {
     bodyLimit: 32 * 1024,
   });
   const config = options.config ?? readConfig();
+  // Optional deployment gate; the health probe reveals no community data.
+  if (config.demoAccessPassword) {
+    const digest = (value: string) => createHash("sha256").update(value).digest();
+    const expected = digest(`Basic ${Buffer.from(`${config.demoAccessUser}:${config.demoAccessPassword}`).toString("base64")}`);
+    app.addHook("onRequest", async (request, reply) => {
+      if (["GET", "HEAD"].includes(request.method) && request.url === "/api/v1/health") return;
+      if (!timingSafeEqual(digest(request.headers.authorization ?? ""), expected)) {
+        reply.header("www-authenticate", 'Basic realm="Neighborhood demo", charset="UTF-8"');
+        reply.header("cache-control", "no-store");
+        return reply.code(401).send({ error: { code: "UNAUTHORIZED", message: "请输入演示站访问凭据" } });
+      }
+    });
+  }
   const db = options.database ?? openDatabase(config.databaseUrl);
   try {
     migrate(db);
