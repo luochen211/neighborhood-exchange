@@ -1,0 +1,26 @@
+{
+  "name": "@neighborhood/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "node --env-file-if-exists=../../.env --import tsx --watch src/server.ts --dev",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node --env-file-if-exists=../../.env dist/server.js"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.1.2",
+    "@fastify/rate-limit": "11.2.0",
+    "@fastify/static": "10.1.5",
+    "@neighborhood/contracts": "*",
+    "better-sqlite3": "13.0.3",
+    "drizzle-orm": "0.45.3",
+    "fastify": "5.12.5",
+    "fastify-plugin": "6.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "9.6.0",
+    "drizzle-kit": "0.31.11"
+  }
+}
