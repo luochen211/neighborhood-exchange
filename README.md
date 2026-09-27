@@ -35,7 +35,7 @@
 
 - [PRD：产品范围、用户流程与验收](docs/product/PRD.md)
 - [SRS：架构、接口、权限、状态与测试](docs/engineering/SRS.md)
-- [数据库 ER 图](docs/engineering/ERD.md)
+- [Chen 全局 E-R 图与实体属性图](docs/engineering/ERD.md)
 - [开发 DAG 与执行规则](docs/planning/DAG.md)
 - [任务清单](docs/planning/tasks.json)
 - [GitHub 交付 Epic](https://github.com/luochen211/neighborhood-exchange/issues/1)

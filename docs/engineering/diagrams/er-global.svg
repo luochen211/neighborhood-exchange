@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1440" viewBox="0 0 1500 1440" role="img" aria-labelledby="title desc">
+<title id="title">邻里闲置：全局实体联系图</title><desc id="desc">Chen 表示法；六个实体，九个联系；实体用矩形，联系用菱形，连线没有箭头，标记 1 和 n。</desc>
+<rect width="1500" height="1440" fill="white"/>
+<g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
+<text x="750" y="57" font-size="38" text-anchor="middle" dominant-baseline="central" font-weight="bold">邻里闲置 · 全局实体联系图</text>
+<text x="750" y="106" font-size="24" text-anchor="middle" dominant-baseline="central">概念结构设计（Chen 表示法）</text>
+<line x1="180" y1="612" x2="180" y2="466" stroke="#111" stroke-width="2"/>
+<text x="155" y="579.88" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="180" y1="233" x2="180" y2="374" stroke="#111" stroke-width="2"/>
+<text x="155" y="264.02" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="270" y1="650" x2="674" y2="650" stroke="#111" stroke-width="2"/>
+<text x="358.88" y="626" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="1230" y1="650" x2="826" y2="650" stroke="#111" stroke-width="2"/>
+<text x="1141.12" y="626" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="236.457" y1="612" x2="404.016" y2="499.22" stroke="#111" stroke-width="2"/>
+<text x="261.32" y="564.188" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="660" y1="389.839" x2="486.354" y2="457.056" stroke="#111" stroke-width="2"/>
+<text x="621.798" y="381.627" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="1263.54" y1="612" x2="1095.98" y2="499.22" stroke="#111" stroke-width="2"/>
+<text x="1238.68" y="564.188" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="840" y1="389.839" x2="1013.65" y2="457.056" stroke="#111" stroke-width="2"/>
+<text x="878.202" y="381.627" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="256" y1="688" x2="398.381" y2="759.19" stroke="#111" stroke-width="2"/>
+<text x="278.324" y="726.662" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="660" y1="854.516" x2="488.73" y2="796.505" stroke="#111" stroke-width="2"/>
+<text x="622.321" y="864.754" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="1244" y1="688" x2="1101.62" y2="759.19" stroke="#111" stroke-width="2"/>
+<text x="1221.68" y="726.662" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="840" y1="854.516" x2="1011.27" y2="796.505" stroke="#111" stroke-width="2"/>
+<text x="877.679" y="864.754" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="205.333" y1="688" x2="418.15" y2="1007.23" stroke="#111" stroke-width="2"/>
+<text x="269.153" y="752.23" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="680.706" y1="1172" x2="479.873" y2="1061.87" stroke="#111" stroke-width="2"/>
+<text x="636.523" y="1124.77" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="1294.67" y1="688" x2="1081.85" y2="1007.23" stroke="#111" stroke-width="2"/>
+<text x="1230.85" y="752.23" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="819.294" y1="1172" x2="1020.13" y2="1061.87" stroke="#111" stroke-width="2"/>
+<text x="863.477" y="1124.77" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="180" y1="688" x2="180" y2="1164" stroke="#111" stroke-width="2"/>
+<text x="155" y="792.72" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="660" y1="1210" x2="256" y2="1210" stroke="#111" stroke-width="2"/>
+<text x="571.12" y="1234" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<polygon points="180,374 256,420 180,466 104,420" fill="white" stroke="#111" stroke-width="2"/>
+<text x="180" y="420" font-size="25" text-anchor="middle" dominant-baseline="central">拥有</text>
+<polygon points="750,604 826,650 750,696 674,650" fill="white" stroke="#111" stroke-width="2"/>
+<text x="750" y="650" font-size="25" text-anchor="middle" dominant-baseline="central">发布</text>
+<polygon points="440,429 516,475 440,521 364,475" fill="white" stroke="#111" stroke-width="2"/>
+<text x="440" y="475" font-size="25" text-anchor="middle" dominant-baseline="central">表达</text>
+<polygon points="1060,429 1136,475 1060,521 984,475" fill="white" stroke="#111" stroke-width="2"/>
+<text x="1060" y="475" font-size="25" text-anchor="middle" dominant-baseline="central">收到</text>
+<polygon points="440,734 516,780 440,826 364,780" fill="white" stroke="#111" stroke-width="2"/>
+<text x="440" y="780" font-size="25" text-anchor="middle" dominant-baseline="central">撰写</text>
+<polygon points="1060,734 1136,780 1060,826 984,780" fill="white" stroke="#111" stroke-width="2"/>
+<text x="1060" y="780" font-size="25" text-anchor="middle" dominant-baseline="central">包含</text>
+<polygon points="440,994 516,1040 440,1086 364,1040" fill="white" stroke="#111" stroke-width="2"/>
+<text x="440" y="1040" font-size="25" text-anchor="middle" dominant-baseline="central">领取</text>
+<polygon points="1060,994 1136,1040 1060,1086 984,1040" fill="white" stroke="#111" stroke-width="2"/>
+<text x="1060" y="1040" font-size="25" text-anchor="middle" dominant-baseline="central">记录</text>
+<polygon points="180,1164 256,1210 180,1256 104,1210" fill="white" stroke="#111" stroke-width="2"/>
+<text x="180" y="1210" font-size="25" text-anchor="middle" dominant-baseline="central">取消</text>
+<rect x="90" y="612" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="180" y="650" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">用户</text>
+<rect x="1230" y="612" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="1320" y="650" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">物品</text>
+<rect x="90" y="157" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="180" y="195" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">登录会话</text>
+<rect x="660" y="317" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="750" y="355" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">意向记录</text>
+<rect x="660" y="847" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="750" y="885" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">留言</text>
+<rect x="660" y="1172" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="750" y="1210" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">交易记录</text>
+<text x="750" y="1325" font-size="23" text-anchor="middle" dominant-baseline="central">1 / n 标注联系的最大基数；实体的属性见配套实体属性图。</text>
+<text x="750" y="1370" font-size="22" text-anchor="middle" dominant-baseline="central">“取消”为可选联系：一笔交易至多有一位取消人，未取消时没有取消人。</text>
+</g>
+</svg>

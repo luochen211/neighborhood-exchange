@@ -1,79 +1,55 @@
-# 数据库 ER 图
+# 数据库 E-R 图（Chen 表示法）
 
-状态：SRS v1.0 的逻辑设计，实际迁移须与此同步。字段约束与时间/金额单位详见 [SRS](SRS.md)。单社区名称通过配置提供，本次不建社区管理表。
+本项目采用参考实验报告中的概念结构表示方式：矩形表示实体，椭圆表示属性，菱形表示联系，标识属性加下划线，连接线无箭头，联系两端标注最大基数 `1` / `n`。
 
-```mermaid
-erDiagram
-    USERS ||--o{ SESSIONS : has
-    USERS ||--o{ ITEMS : publishes
-    USERS ||--o{ INTERESTS : expresses
-    USERS ||--o{ COMMENTS : writes
-    USERS ||--o{ TRADES : receives
-    USERS o|--o{ TRADES : cancels
-    ITEMS ||--o{ INTERESTS : attracts
-    ITEMS ||--o{ COMMENTS : contains
-    ITEMS ||--o{ TRADES : records
+图纸分为全局实体联系图和实体属性图，使用中文实体名与属性名。状态：设计阶段；数据库字段、类型和约束见 [SRS](SRS.md)，实施后须与实际迁移同步核验。
 
-    USERS {
-        text id PK
-        text nickname
-        text building
-        integer created_at
-    }
-    SESSIONS {
-        text id PK
-        text token_hash UK
-        text user_id FK
-        integer expires_at
-        integer created_at
-    }
-    ITEMS {
-        text id PK
-        text owner_id FK
-        text title
-        text description
-        text trade_mode
-        integer price_cents
-        text image_key
-        text pickup_building
-        text status
-        integer created_at
-        integer updated_at
-        integer given_at
-    }
-    INTERESTS {
-        text id PK
-        text item_id FK
-        text user_id FK
-        boolean active
-        integer created_at
-        integer updated_at
-    }
-    COMMENTS {
-        text id PK
-        text item_id FK
-        text author_id FK
-        text body
-        integer created_at
-    }
-    TRADES {
-        text id PK
-        text item_id FK
-        text recipient_id FK
-        text status
-        integer meeting_start
-        integer meeting_end
-        text meeting_place
-        integer created_at
-        integer confirmed_at
-        integer completed_at
-        integer cancelled_at
-        text cancelled_by FK
-    }
+## 1. 全局实体联系图
+
+![邻里闲置全局实体联系图](diagrams/er-global.png)
+
+[SVG 矢量源图](diagrams/er-global.svg) · [PNG 图片](diagrams/er-global.png)
+
+用户、物品、登录会话、意向记录、留言、交易记录共六个实体。意向、留言与交易均有独立标识、属性或历史状态，作为记录实体建模；发布者、领取者是用户在联系中的角色。
+
+## 2. 实体属性图
+
+![邻里闲置实体属性图](diagrams/er-attributes.png)
+
+[SVG 矢量源图](diagrams/er-attributes.svg) · [PNG 图片](diagrams/er-attributes.png)
+
+每个实体的编号为标识属性，以椭圆内文字下划线表示。实体间引用由全局图中的联系表达，逻辑表中的外键对应关系见下表；属性图展示其余字段。物品的“价格”对应整数分，“发布时间”对应 created_at，“送出时间”对应 given_at，其他字段映射遵循 SRS。
+
+## 3. 联系与关系模式映射
+
+`1:n` 表示左侧一个实体最多关联右侧多个实体。最大基数不表示必须存在记录；最小参与约束单独说明。
+
+| 左侧实体 | 联系 | 右侧实体 | 最大基数 | 参与约束 | 逻辑外键 |
+| --- | --- | --- | --- | --- | --- |
+| 用户 | 拥有 | 登录会话 | 1:n | 用户可无会话；每个会话属于一个用户 | sessions.user_id |
+| 用户 | 发布 | 物品 | 1:n | 用户可无物品；每件物品有一个发布者 | items.owner_id |
+| 用户 | 表达 | 意向记录 | 1:n | 用户可无意向；每条意向属于一个用户 | interests.user_id |
+| 物品 | 收到 | 意向记录 | 1:n | 物品可无意向；每条意向针对一件物品 | interests.item_id |
+| 用户 | 撰写 | 留言 | 1:n | 用户可无留言；每条留言有一个作者 | comments.author_id |
+| 物品 | 包含 | 留言 | 1:n | 物品可无留言；每条留言属于一件物品 | comments.item_id |
+| 用户 | 领取 | 交易记录 | 1:n | 用户可无交易；每笔交易有一个指定领取人 | trades.recipient_id |
+| 物品 | 记录 | 交易记录 | 1:n | 物品可无交易；每笔交易针对一件物品 | trades.item_id |
+| 用户 | 取消 | 交易记录 | 1:n | 用户可无取消操作；交易有零个或一个取消人 | trades.cancelled_by（可空） |
+
+用户与物品的多对多意向由意向记录实体连接，`interests(item_id,user_id)` 联合唯一。一次撤回后重新表达，复用同一条记录并更新有效状态。
+
+物品与交易的 `1:n` 包含多次取消历史。同一物品最多一笔未取消交易，由 `trades(item_id) WHERE status IN ('PENDING','CONFIRMED','COMPLETED')` 唯一部分索引保证；不能将图中的 `n` 理解为允许同时成交给多人。
+
+交易的发布者通过所属物品确定；取消人必须是交易双方之一。GIVEN 与 COMPLETED 状态同步、权限及跨表业务条件由同一事务保证。单社区名称来自配置，不额外建立社区管理实体。
+
+## 4. 图纸维护与导出
+
+生成脚本：[scripts/render_erd.py](../../scripts/render_erd.py)。SVG 是可编辑矢量图，PNG 可直接插入文档或视频；两者均已提交仓库。
+
+本地具备 Python 3、`rsvg-convert`（librsvg）和中文字体（默认宋体 Songti SC）后执行：
+
+```bash
+python3 scripts/render_erd.py
 ```
 
-- `interests(item_id,user_id)` 联合唯一；撤回通过 active=false 保留记录。
-- trades 的卖方由 items.owner_id 得出，避免重复存储与不一致。
-- trades 对 item_id 建立 `WHERE status IN ('PENDING','CONFIRMED','COMPLETED')` 唯一部分索引；取消记录不占用唯一名额。
-- 图中的物品与交易一对多包含取消历史；不代表允许并行有效交易。
-- GIVEN 与 COMPLETED 的同步、角色权限及跨表业务前提由同一个数据库事务保证。
+更改实体、属性或联系时，同步 SRS、生成脚本及两组输出，再检查中文显示、连线、基数和下划线。后续考试交付仍须将图与实际数据库迁移核对，不能以设计图已经导出代替数据库验收。

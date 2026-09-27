@@ -215,7 +215,7 @@
       "scope": "README、docs/delivery、ERD 导出和视频文件或链接。",
       "acceptance": [
         "干净环境按 README 完成安装、迁移、种子和启动；全部必需用例有证据",
-        "ER 图与实际迁移一致并有可查看导出，技术简介说明前后端/数据库/LLM 结构",
+        "Chen 全局实体联系图和实体属性图与实际迁移一致，提供 SVG 源图和 PNG 导出，技术简介说明前后端/数据库/LLM 结构",
         "交付约 5 分钟 Demo + 讲解视频；记录 AI Coding 工具使用、关键迭代与人工验证",
         "材料链接可打开，无密钥；核验 default branch/CI/Issue 验收一致后才关闭本任务和 Epic"
       ],
