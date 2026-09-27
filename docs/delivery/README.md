@@ -1,11 +1,12 @@
 # 最终交付索引
 
-本地全栈应用已实现并完成真实 HTTP 验收。当前报告 20 页，内含 7 张真实运行截图及 10 张独立 Chen E-R 图；实际成片约 5 分钟，带中文合成讲解音轨和字幕。材料 PR #23 已合并为 `604a60a`，对应 main CI `36290725973` 成功；协调者独立审阅完成，#12 与 Epic #1 已验收关闭。
+本地全栈应用已实现并完成真实 HTTP 验收。当前报告 20 页，内含 7 张真实运行截图及 10 张独立 Chen E-R 图；实际成片约 5 分钟，带原创 BGM、中文合成讲解和字幕，采用 1080p 宽屏与章节动效。材料 PR #23 已合并为 `604a60a`，对应 main CI `36290725973` 成功；协调者独立审阅完成，#12 与 Epic #1 已验收关闭。
 
 | 材料 | 文件 |
 | --- | --- |
 | 项目设计与实现说明书 | [Word](邻里闲置_项目设计说明书.docx) · [PDF](邻里闲置_项目设计说明书.pdf) |
 | 实际操作与讲解成片 | [MP4](邻里闲置_演示视频.mp4) · [SRT 字幕](邻里闲置_演示字幕.srt) |
+| 配乐与混音 | [独立 BGM](邻里闲置_背景音乐.mp3) · [声音制作](music.md) |
 | 视频时间轴与核验 | [制作说明](video.md) · [逐段讲解稿](video-transcript.md) |
 | 原始真实截图与来源 | [manifest](screenshots/manifest.json) · [桌面首页](screenshots/home-desktop.png) · [手机首页](screenshots/home-mobile.png) |
 | 10 张独立图（各 SVG + PNG） | [ER 图集与映射](../engineering/ERD.md) · [实际迁移核对](erd-verification.md) |
@@ -22,7 +23,7 @@
 
 ## 重新生成材料
 
-日常应用运行见根 README。以下流程只面向材料重录，须使用新的**隔离数据库**，不能指向现有用户数据库。Python 需 `python-docx` / Pillow；需安装 `rsvg-convert`、Playwright Chromium、LibreOffice、Poppler、FFmpeg/ffprobe。视频脚本使用 macOS `say` 的婷婷中文语音与系统黑体，不调用在线语音服务。
+日常应用运行见根 README。以下流程只面向材料重录，须使用新的**隔离数据库**，不能指向现有用户数据库。Python 需 `python-docx` / Pillow / NumPy；需安装 `rsvg-convert`、Playwright Chromium、LibreOffice、Poppler、FFmpeg/ffprobe。视频脚本使用 macOS `say` 的婷婷中文语音与系统黑体，不调用在线语音服务。
 
 ```sh
 npm ci
@@ -53,7 +54,7 @@ soffice -env:UserInstallation=file:///tmp/neighborhood-final-render --headless \
   --convert-to pdf --outdir docs/delivery docs/delivery/邻里闲置_项目设计说明书.docx
 ```
 
-录制脚本只允许 3130 且需显式 `DELIVERY_ISOLATED=true`，阻止 AI 路由；它记录双身份操作与每段原视频，输出当前截图 manifest。两个既有真实 AI 截图已在仓库，重录不会覆盖或再次请求。成片包含 9 段真实操作和 3 段明确标注的说明，每段 25 秒；原视频、旁白中间文件和备份留在工作目录，不提交过时正文或数据库。
+录制脚本只允许 3130 且需显式 `DELIVERY_ISOLATED=true`，阻止 AI 路由；它记录双身份操作与每段原视频，输出当前截图 manifest。两个既有真实 AI 截图已在仓库，重录不会覆盖或再次请求。成片包含 9 段真实操作和 3 段明确标注的说明，每段 25 秒；制作入口会自动加入宽屏动效、原创配乐和旁白侧链混音；原视频、旁白中间文件和备份留在工作目录，不提交过时正文或数据库。
 
 图纸与 v2 迁移已经核对，无实体或字段变化，因此沿用经过验收的 10 对 SVG/PNG。需要重新导出时执行 `python3 scripts/render_erd.py`，再核验图内标签、完整结构、中文与主键下划线。
 

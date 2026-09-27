@@ -1,5 +1,5 @@
 /** Compose the captured HTTP scenes and explicitly labeled evidence slides.
- * Requires Playwright, ffmpeg/ffprobe, Python with Pillow, and macOS say Chinese voice.
+ * Requires Playwright, ffmpeg/ffprobe, Python with Pillow and NumPy, and macOS say Chinese voice.
  * Input: capture_report.cjs output; never sends application or model requests.
  */
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
@@ -62,7 +62,9 @@ const stamp=s=>`${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floo
  }
  fs.writeFileSync(path.join(work,'concat.txt'),scenes.map((_,i)=>`file '${path.join(work,String(i+1).padStart(2,'0')+'.mp4')}'`).join('\n'));
  const final=path.join(out,'邻里闲置_演示视频.mp4');
- run('ffmpeg',['-y','-v','error','-f','concat','-safe','0','-i',path.join(work,'concat.txt'),'-c','copy','-movflags','+faststart',final]);
+ const assembly=path.join(work,'narrated-assembly.mp4');
+ run('ffmpeg',['-y','-v','error','-f','concat','-safe','0','-i',path.join(work,'concat.txt'),'-c','copy','-movflags','+faststart',assembly]);
+ run(process.env.DELIVERY_PYTHON||'python3',[path.join(__dirname,'style_delivery_video.py'),'--work',work]);
  fs.writeFileSync(path.join(out,'邻里闲置_演示字幕.srt'),srt.join('\n'));
  fs.writeFileSync(path.join(out,'video-transcript.md'),transcript.join('\n'));
  fs.writeFileSync(path.join(work,'final-probe.json'),JSON.stringify(probe(final),null,2));
