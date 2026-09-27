@@ -27,11 +27,14 @@
 
 ## 当前状态
 
-已完成 PRD、SRS、数据库逻辑设计与开发 DAG；应用功能尚未实现。
+已完成 PRD、SRS、数据库设计、开发 DAG、Web 原型和配图 Word 报告；全栈应用功能尚未实现。
 
 技术方案：React + TypeScript + Vite 前端，Node.js + Fastify API，SQLite + Drizzle 数据库，服务端 LLM 发布辅助。依赖版本在工程初始化任务中锁定。
 
 ## 项目文档
+
+- [Word 项目设计说明书（含 Web 原型截图与 E-R 图）](docs/delivery/邻里闲置_项目设计说明书.docx)
+- [报告 PDF 预览与复现说明](docs/delivery/README.md)
 
 - [PRD：产品范围、用户流程与验收](docs/product/PRD.md)
 - [SRS：架构、接口、权限、状态与测试](docs/engineering/SRS.md)
@@ -40,4 +43,4 @@
 - [任务清单](docs/planning/tasks.json)
 - [GitHub 交付 Epic](https://github.com/luochen211/neighborhood-exchange/issues/1)
 
-功能实现前请先按 DAG 认领 Ready 任务。当前尚无可运行应用、CI 或部署；不能将需求文档中的目标当作已通过验收。
+功能实现前请先按 DAG 认领 Ready 任务。当前只有报告用静态原型，尚无可运行全栈应用、CI 或部署；不能将需求文档中的目标当作已通过验收。

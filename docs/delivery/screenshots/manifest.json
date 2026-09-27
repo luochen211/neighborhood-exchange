@@ -1,0 +1,50 @@
+{
+  "kind": "prototype",
+  "source": "docs/prototype",
+  "capturedAt": "2026-09-27T02:01:59.893Z",
+  "pages": [
+    {
+      "route": "home",
+      "title": "社区首页",
+      "description": "卡片突出物品、新鲜度、价格和所在楼栋。搜索和交易方式筛选支持组合使用；顶部统计与底部热门信息为原型示例。",
+      "file": "home-desktop.png",
+      "viewport": "1440 × 960"
+    },
+    {
+      "route": "detail",
+      "title": "物品详情与公开留言",
+      "description": "物品详情集中展示描述、发布者、自提方式和当前状态。用户可表达或撤回想要，公开留言可减少重复私聊。页面交互仅模拟前端状态。",
+      "file": "detail-desktop.png",
+      "viewport": "1440 × 960"
+    },
+    {
+      "route": "publish",
+      "title": "物品发布与 AI 辅助",
+      "description": "左侧填写事实信息，右侧展示固定 AI 建议示例。文案与参考价格分别采用，用户仍可修改；本页没有发出真实模型请求，也不保存业务数据。",
+      "file": "publish-desktop.png",
+      "viewport": "1440 × 960"
+    },
+    {
+      "route": "handoff",
+      "title": "预约交接与完成",
+      "description": "发布者查看领取人、时间、公共交接地点和确认进度。页面可演示取消、完成二次确认和状态反馈；这些操作未写入后端。",
+      "file": "handoff-desktop.png",
+      "viewport": "1440 × 960"
+    }
+  ],
+  "verification": {
+    "desktop": "1440x960",
+    "mobile": "390x844",
+    "overflow": false,
+    "consoleErrors": [],
+    "interactions": [
+      "filter",
+      "empty search",
+      "want toggle",
+      "adopt sample description",
+      "adopt sample price",
+      "cancel",
+      "complete confirmation"
+    ]
+  }
+}
