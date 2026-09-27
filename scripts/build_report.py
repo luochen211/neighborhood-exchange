@@ -53,6 +53,7 @@ def table(doc,headers,rows,widths=None):
 def image(doc,path,caption,width=6):
     p=doc.add_paragraph();p.alignment=WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after=Pt(2)
+    p.paragraph_format.keep_with_next=True
     p.add_run().add_picture(str(path),width=Inches(width))
     p=paragraph(doc,caption,'Caption');p.alignment=WD_ALIGN_PARAGRAPH.CENTER
 
@@ -137,7 +138,7 @@ def main():
     new_page(d,'4  数据库概念结构与全局 E-R 图')
     paragraph(d,'采用 Chen 表示法：矩形表示实体，椭圆表示属性，菱形表示联系，主键属性加下划线，直线无箭头，1 / n 表示联系的最大基数。共包含 6 张实体属性图、3 张局部联系图和 1 张全局图。')
     image(d,DIAGRAMS/'er-global.png','图 4-1  全局实体联系图',6.0)
-    paragraph(d,'六个实体为用户、登录会话、物品、意向记录、留言和交易记录。取消联系可选，交易有零个或一个取消人；物品与交易的一对多包含取消历史，不表示允许同时成交给多人。')
+    paragraph(d,'六个实体为用户、登录会话、物品、意向记录、留言和交易记录，实体属性见第 5 节。取消联系可选，交易有零个或一个取消人；物品与交易的一对多包含取消历史，不表示允许同时成交给多人。')
     attrs=[('user','用户'),('session','登录会话'),('item','物品'),('interest','意向记录'),('comment','留言'),('trade','交易记录')]
     for group in range(3):
         new_page(d,f'5.{group+1}  实体属性图')
@@ -145,7 +146,7 @@ def main():
             i=group*2+j;slug,name=attrs[i]
             image(d,DIAGRAMS/f'attribute-{slug}.png',f'图 5-{i+1}  {name}实体属性图',5.65)
         if group==0:paragraph(d,'标识属性以椭圆内文字下划线表示。外键通过联系图表达；字段英文名、数据类型和约束见 SRS。')
-    locals=[('publishing','用户发布与登录','一个用户可拥有多个会话、发布多件物品。会话与物品各属于一个用户。'),('interest-comments','物品意向与留言','每条意向或留言关联一个用户和一件物品。同一用户对同一物品只有一条意向记录，撤回后可再次激活。'),('trading','交易交接','每笔交易关联一件物品和一个指定领取者；发布者由物品确定。取消人必须是双方之一；同一物品最多一笔未取消交易。')]
+    locals=[('publishing','用户发布与登录','一个用户可拥有多个会话、发布多件物品。会话与物品各属于一个用户。'),('interest-comments','物品意向与留言','每条意向或留言关联一个用户和一件物品。同一用户对同一物品只有一条意向记录，撤回后可再次激活。'),('trading','交易交接','每笔交易关联一件物品和一个指定领取者；发布者由物品确定。取消联系可选，取消人必须是双方之一；一件物品可有多次取消历史，但最多一笔未取消交易。')]
     for i,(slug,name,note) in enumerate(locals,1):
         new_page(d,f'6.{i}  局部实体联系图：{name}')
         image(d,DIAGRAMS/f'local-{slug}.png',f'图 6-{i}  {name}联系图',6.3)

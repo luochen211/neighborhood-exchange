@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="656" viewBox="110 172 1140 656" role="img" aria-labelledby="title desc">
 <title id="title">用户发布与登录联系图</title><desc id="desc">Chen 局部实体联系图，连接线无箭头，1/n 为最大基数。</desc>
-<rect width="1400" height="1000" fill="white"/>
+<rect x="110" y="172" width="1140" height="656" fill="white"/>
 <g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
-<text x="700" y="60" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 7  用户发布与登录联系图</text>
 <line x1="350" y1="474.286" x2="628.371" y2="394.751" stroke="#111" stroke-width="2"/>
 <text x="411.242" y="430.788" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
 <line x1="1010" y1="293.571" x2="733.046" y2="366.107" stroke="#111" stroke-width="2"/>
@@ -21,6 +20,5 @@
 <text x="1100" y="270" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">登录会话</text>
 <rect x="1010" y="692" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
 <text x="1100" y="730" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">物品</text>
-<text x="700" y="945" font-size="22" text-anchor="middle" dominant-baseline="central">用户可拥有多个登录会话、发布多件物品；会话和物品各属于一个用户。</text>
 </g>
 </svg>

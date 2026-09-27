@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="756" viewBox="30 122 1340 756" role="img" aria-labelledby="title desc">
 <title id="title">物品意向与留言联系图</title><desc id="desc">Chen 局部实体联系图，连接线无箭头，1/n 为最大基数。</desc>
-<rect width="1400" height="1000" fill="white"/>
+<rect x="30" y="122" width="1340" height="756" fill="white"/>
 <g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
-<text x="700" y="60" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 8  物品意向与留言联系图</text>
 <line x1="237" y1="462" x2="383.834" y2="364.11" stroke="#111" stroke-width="2"/>
 <text x="269.304" y="415.464" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
 <line x1="611.333" y1="258" x2="464.495" y2="320.931" stroke="#111" stroke-width="2"/>
@@ -35,6 +34,5 @@
 <text x="700" y="220" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">意向记录</text>
 <rect x="610" y="742" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
 <text x="700" y="780" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">留言</text>
-<text x="700" y="945" font-size="22" text-anchor="middle" dominant-baseline="central">每条意向或留言关联一个用户和一件物品；同一用户对同一物品只有一条意向记录。</text>
 </g>
 </svg>
