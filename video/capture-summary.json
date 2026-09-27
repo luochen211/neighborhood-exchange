@@ -1,0 +1,25 @@
+{
+  "kind": "real-http",
+  "capturedAt": "2026-09-27T04:06:55.929Z",
+  "base": "http://127.0.0.1:3130",
+  "isolatedDatabase": true,
+  "modelCallsDuringCapture": 0,
+  "verification": {
+    "consoleErrors": [],
+    "desktop": "1280x720",
+    "mobile": "390x720",
+    "overflow": false,
+    "completedDelta": 1,
+    "workflow": [
+      "publish",
+      "interest",
+      "comment",
+      "reserve",
+      "reject",
+      "reserve again",
+      "confirm",
+      "complete",
+      "archive"
+    ]
+  }
+}

@@ -1,0 +1,1585 @@
+{
+  "isolatedDatabase": true,
+  "modelCalls": 0,
+  "events": [
+    {
+      "scene": 1,
+      "seconds": 0.18,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 0.19,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 0.21,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 0.24,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 401
+    },
+    {
+      "scene": 1,
+      "seconds": 2.58,
+      "kind": "input",
+      "label": "搜索闲置"
+    },
+    {
+      "scene": 1,
+      "seconds": 3.33,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 6.03,
+      "kind": "search-result",
+      "query": "木椅"
+    },
+    {
+      "scene": 1,
+      "seconds": 6.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 8.27,
+      "kind": "filter",
+      "mode": "FREE"
+    },
+    {
+      "scene": 1,
+      "seconds": 8.32,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/00000000-0000-4000-8000-000000000100",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 8.34,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/00000000-0000-4000-8000-000000000100/comments",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 10.31,
+      "kind": "detail-open"
+    },
+    {
+      "scene": 1,
+      "seconds": 10.33,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 10.34,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 10.41,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 11.65,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 11.75,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/auth/demo-login",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 11.76,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 11.76,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 11.77,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 12.98,
+      "kind": "account-review"
+    },
+    {
+      "scene": 1,
+      "seconds": 13,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 16.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 16.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 16.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 16.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 1,
+      "seconds": 17.55,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 1,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 2,
+      "seconds": 0.09,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 0.09,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 2.72,
+      "kind": "input",
+      "label": "物品名称"
+    },
+    {
+      "scene": 2,
+      "seconds": 5.94,
+      "kind": "input",
+      "label": "物品描述"
+    },
+    {
+      "scene": 2,
+      "seconds": 8.44,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/items",
+      "status": 201
+    },
+    {
+      "scene": 2,
+      "seconds": 8.46,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 8.46,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 8.48,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 8.48,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interests",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 9.97,
+      "kind": "account-review"
+    },
+    {
+      "scene": 2,
+      "seconds": 9.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 13.98,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 13.98,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 13.98,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 13.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 13.99,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 14,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interests",
+      "status": 200
+    },
+    {
+      "scene": 2,
+      "seconds": 14.52,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 2,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 3,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 0.09,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 401
+    },
+    {
+      "scene": 3,
+      "seconds": 0.1,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 1.89,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/auth/demo-login",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 1.9,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 1.9,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 1.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 5.45,
+      "kind": "http",
+      "method": "PUT",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interest",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 5.46,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 5.46,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 5.46,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 9.66,
+      "kind": "input",
+      "label": "留言内容"
+    },
+    {
+      "scene": 3,
+      "seconds": 10.4,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 201
+    },
+    {
+      "scene": 3,
+      "seconds": 10.41,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 10.41,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 10.41,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 11.64,
+      "kind": "account-review"
+    },
+    {
+      "scene": 3,
+      "seconds": 11.66,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 15.64,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 15.64,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 15.64,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 15.65,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 15.65,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 3,
+      "seconds": 16.19,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 3,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 4,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interests",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 2.49,
+      "kind": "input",
+      "label": "公共交接地点"
+    },
+    {
+      "scene": 4,
+      "seconds": 7.23,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/trades",
+      "status": 201
+    },
+    {
+      "scene": 4,
+      "seconds": 7.24,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 7.24,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 7.24,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interests",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 7.24,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 7.24,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 7.25,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 8.85,
+      "kind": "account-review"
+    },
+    {
+      "scene": 4,
+      "seconds": 8.87,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.86,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.86,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.87,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.87,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.88,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.88,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 12.89,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 4,
+      "seconds": 13.4,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 4,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 5,
+      "seconds": 0.06,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 0.09,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 0.1,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 0.1,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 0.12,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 7.9,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/trades/b47b4fe5-9503-4419-a1e9-cd06d782ef4e/cancel",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 7.92,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 7.92,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 9.56,
+      "kind": "account-review"
+    },
+    {
+      "scene": 5,
+      "seconds": 9.59,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 13.58,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 13.58,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 13.58,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 13.59,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 13.6,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 5,
+      "seconds": 14.13,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 5,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 6,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 0.06,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interests",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 2.54,
+      "kind": "input",
+      "label": "公共交接地点"
+    },
+    {
+      "scene": 6,
+      "seconds": 7.28,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/trades",
+      "status": 201
+    },
+    {
+      "scene": 6,
+      "seconds": 7.29,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 7.29,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 7.29,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/interests",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 7.29,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 7.3,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 7.3,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 8.6,
+      "kind": "account-review"
+    },
+    {
+      "scene": 6,
+      "seconds": 8.62,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.6,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.61,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.61,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.61,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.62,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.62,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 12.62,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 6,
+      "seconds": 13.15,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 6,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 7,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 7.9,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/trades/e960c552-05d1-48fc-8217-0f2005b7cde5/confirm",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 7.91,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 9.19,
+      "kind": "account-review"
+    },
+    {
+      "scene": 7,
+      "seconds": 9.2,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.2,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.2,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.2,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.21,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.21,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.22,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.22,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 7,
+      "seconds": 13.74,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 7,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 8,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 0.04,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 0.08,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 9.91,
+      "kind": "http",
+      "method": "POST",
+      "path": "/api/v1/trades/e960c552-05d1-48fc-8217-0f2005b7cde5/complete",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 9.92,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 9.92,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 9.92,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 9.93,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/trades",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 9.93,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 11.5,
+      "kind": "account-review"
+    },
+    {
+      "scene": 8,
+      "seconds": 11.52,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 15.5,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 15.5,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 15.5,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 15.5,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 15.51,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 8,
+      "seconds": 16.04,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 8,
+      "seconds": 25,
+      "kind": "scene-complete"
+    },
+    {
+      "scene": 9,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 0.07,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 8.83,
+      "kind": "viewport",
+      "width": 390,
+      "height": 720
+    },
+    {
+      "scene": 9,
+      "seconds": 13.96,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 13.97,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 13.97,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 13.97,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 13.98,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 15.77,
+      "kind": "account-review"
+    },
+    {
+      "scene": 9,
+      "seconds": 15.82,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/me/items",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 19.76,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/demo/users",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 19.76,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 19.76,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 19.76,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 19.77,
+      "kind": "http",
+      "method": "GET",
+      "path": "/api/v1/items/a77e36f0-0932-4a5c-b312-58da443f03ba/comments",
+      "status": 200
+    },
+    {
+      "scene": 9,
+      "seconds": 20.29,
+      "kind": "return-to-result"
+    },
+    {
+      "scene": 9,
+      "seconds": 25,
+      "kind": "scene-complete"
+    }
+  ]
+}

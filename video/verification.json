@@ -1,0 +1,117 @@
+{
+  "layout": {
+    "header": {
+      "x": 192,
+      "y": 18,
+      "w": 1536,
+      "h": 88
+    },
+    "web": {
+      "x": 192,
+      "y": 124,
+      "w": 1536,
+      "h": 864
+    },
+    "caption": {
+      "x": 120,
+      "y": 1003,
+      "w": 1680,
+      "h": 55
+    }
+  },
+  "subtitleMaxWidth": 992,
+  "subtitleCount": 36,
+  "media": [
+    {
+      "scene": 1,
+      "duration": 25,
+      "playbackRate": 1,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 24,
+      "longestNearStillSeconds": 2.5,
+      "maxFrameDifference": 69.02
+    },
+    {
+      "scene": 2,
+      "duration": 24.92,
+      "playbackRate": 0.9968,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 16,
+      "longestNearStillSeconds": 5.5,
+      "maxFrameDifference": 67.8
+    },
+    {
+      "scene": 3,
+      "duration": 25,
+      "playbackRate": 1,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 20,
+      "longestNearStillSeconds": 3.5,
+      "maxFrameDifference": 58.39
+    },
+    {
+      "scene": 4,
+      "duration": 24.96,
+      "playbackRate": 0.9984000000000001,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 16,
+      "longestNearStillSeconds": 7,
+      "maxFrameDifference": 73.36
+    },
+    {
+      "scene": 5,
+      "duration": 24.92,
+      "playbackRate": 0.9968,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 15,
+      "longestNearStillSeconds": 6,
+      "maxFrameDifference": 58.37
+    },
+    {
+      "scene": 6,
+      "duration": 25,
+      "playbackRate": 1,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 18,
+      "longestNearStillSeconds": 7,
+      "maxFrameDifference": 67.83
+    },
+    {
+      "scene": 7,
+      "duration": 24.96,
+      "playbackRate": 0.9984000000000001,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 18,
+      "longestNearStillSeconds": 6.5,
+      "maxFrameDifference": 56.42
+    },
+    {
+      "scene": 8,
+      "duration": 24.96,
+      "playbackRate": 0.9984000000000001,
+      "played": 25,
+      "sampledFrames": 50,
+      "changedIntervals": 18,
+      "longestNearStillSeconds": 4.5,
+      "maxFrameDifference": 67.89
+    },
+    {
+      "scene": 9,
+      "duration": 26.24,
+      "playbackRate": 1.0495999999999999,
+      "played": 25,
+      "sampledFrames": 52,
+      "changedIntervals": 11,
+      "longestNearStillSeconds": 7.5,
+      "maxFrameDifference": 82.47
+    }
+  ],
+  "mobileStartFrame": 253
+}
