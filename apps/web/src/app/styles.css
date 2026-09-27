@@ -578,6 +578,8 @@ fieldset {
   min-width: 0;
 }
 .image-options {
+  max-height: 360px;
+  overflow-y: auto;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;

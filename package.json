@@ -16,13 +16,14 @@
     "dev": "concurrently --kill-others --names contracts,api,web \"npm run dev -w @neighborhood/contracts\" \"npm run dev -w @neighborhood/api\" \"npm run dev -w @neighborhood/web\"",
     "build": "npm run build -w @neighborhood/contracts && npm run build -w @neighborhood/api && npm run build -w @neighborhood/web",
     "start": "npm start -w @neighborhood/api",
-    "lint": "eslint apps packages *.config.* --max-warnings 0",
+    "lint": "eslint apps packages tests *.config.* --max-warnings 0",
     "typecheck": "npm run build -w @neighborhood/contracts && npm run typecheck --workspaces",
     "test": "vitest run",
     "check": "npm run lint && npm run typecheck && npm test && npm run build",
     "predev": "npm run build -w @neighborhood/contracts",
     "db:migrate": "npm run db:migrate -w @neighborhood/api",
-    "db:seed": "npm run db:seed -w @neighborhood/api"
+    "db:seed": "npm run db:seed -w @neighborhood/api",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

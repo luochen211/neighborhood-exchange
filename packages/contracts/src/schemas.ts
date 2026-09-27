@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const API_PREFIX = '/api/v1';
 export const SESSION_COOKIE_NAME = 'neighborhood_session';
-export const IMAGE_KEYS = ['chair', 'lamp', 'cooker', 'books'] as const;
+export const IMAGE_KEYS = ["chair", "lamp", "cooker", "books", "stroller", "monstera", "rice-cooker", "electric-kettle", "table-fan", "toaster", "coffee-maker", "vacuum-cleaner", "side-table", "bookshelf", "office-chair", "shoe-rack", "floor-lamp", "storage-basket", "picture-books", "building-blocks", "baby-high-chair", "balance-bike", "yoga-mat", "dumbbells", "badminton-rackets", "camping-chair", "suitcase", "guitar", "ceramic-vase", "succulents"] as const;
 export const AI_DISCLAIMER = '基于描述的 AI 建议，非市场行情估价';
 export const idSchema = z.uuid();
 export const timestampSchema = z.iso.datetime({ offset: true });

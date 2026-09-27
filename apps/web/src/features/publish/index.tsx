@@ -10,6 +10,7 @@ import {
 import { useApp, useAction } from "../../lib/state";
 import { errorMessage } from "../../lib/api";
 import { Button, Field, ErrorText } from "../../components/ui";
+import { itemImages } from "../../lib/images";
 import { ItemArt, modes } from "../../components/items";
 import { LoginPrompt } from "../auth";
 const initial = {
@@ -187,22 +188,13 @@ function PublishForm() {
                     onChange={() => update("imageKey", key)}
                   />
                   <ItemArt kind={key} />
-                  <span>
-                    {
-                      {
-                        chair: "椅子",
-                        lamp: "台灯",
-                        cooker: "电磁炉",
-                        books: "书籍",
-                      }[key]
-                    }
-                  </span>
+                  <span>{itemImages[key].label}</span>
                 </label>
               ))}
             </div>
           </fieldset>
           <p className="muted small">
-            图片为预置示意图，请在描述中说明实物情况。交易在线下完成。
+            图片为 AI 生成演示图片，请在描述中说明实物情况。交易在线下完成。
           </p>
           <Button className="primary" type="submit" disabled={action.busy}>
             {action.busy ? "正在发布…" : "确认发布"}

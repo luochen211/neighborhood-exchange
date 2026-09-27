@@ -1,3 +1,4 @@
+import { ITEM_IMAGES } from "@neighborhood/contracts";
 import { eq } from "drizzle-orm";
 import type { Db } from "./index.js";
 import { users, items, interests, comments, trades } from "./schema.js";
@@ -68,6 +69,16 @@ export function seed(db: Db, now = Date.now()) {
           status: "GIVEN",
         },
       ] as const;
+      for (const [i, image] of ITEM_IMAGES.slice(4).entries()) {
+        db.orm.insert(items).values({
+          id: id(500 + i), ownerId: DEMO_USERS[i % 3]!.id,
+          title: `闲置${image.name}`, description: `虚构演示物品：${image.name}。图片为 AI 生成，请线下确认实物情况。`,
+          tradeMode: i % 3 === 0 ? "FREE" : i % 3 === 1 ? "FLEXIBLE" : "FIXED",
+          priceCents: i % 3 === 0 ? 0 : i % 3 === 1 ? null : 2000,
+          imageKey: image.key, pickupBuilding: DEMO_USERS[i % 3]!.building,
+          status: "AVAILABLE", createdAt: now - (i + 5) * 3600000, updatedAt: now, givenAt: null,
+        }).onConflictDoNothing().run();
+      }
       examples.forEach((e, i) => {
         const itemId = id(100 + i);
         if (db.orm.select().from(items).where(eq(items.id, itemId)).get())
