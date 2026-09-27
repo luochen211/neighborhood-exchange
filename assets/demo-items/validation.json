@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-09-27T02:44:11.845510+00:00",
+  "expectedCount": 30,
+  "actualCount": 30,
+  "uniqueSlugs": 30,
+  "uniqueHashes": 30,
+  "decodedImages": 30,
+  "squareImages": 30,
+  "dimensions": [
+    "1254x1254"
+  ],
+  "visualReview": "All 30 tool previews inspected individually: subject matches filename, whole main item visible, consistent natural home photography; no obvious branding, people or watermarks.",
+  "method": "ImageMagick full PNG decode and SHA-256; individual visual inspection",
+  "totalOriginalBytes": 58579800
+}
