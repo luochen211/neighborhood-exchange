@@ -17,7 +17,7 @@ npm run dev -w @neighborhood/api
 
 `db:seed` 要求 `.env` 或环境设置 `DEMO_MODE=true`；关闭时明确拒绝种子命令。`.env` 示例不含模型凭据，默认绑定 127.0.0.1。`DATABASE_URL` 为 SQLite 文件路径，**相对路径始终从仓库根解析**，不依赖调用者当前目录。缺省为根目录 `data/neighborhood.db`。测试专用可设置 `:memory:`。
 
-启动会执行版本化迁移（当前 `PRAGMA user_version=1`），不会自动 seed 或重置数据库。重复 seed 使用固定虚构 ID，仅插入缺失记录，不覆盖既有业务行。禁止对用户库执行测试重置。所有会话 token 仅在 HttpOnly Cookie 中返回，数据库只存 SHA-256 哈希，24 小时有效；切换身份撤销旧 token，登出幂等，DEMO_MODE=false 时旧演示会话失效。
+启动会执行版本化迁移（当前 `PRAGMA user_version=2`），不会自动 seed 或重置数据库。重复 seed 使用固定虚构 ID，仅插入缺失记录，不覆盖既有业务行。禁止对用户库执行测试重置。所有会话 token 仅在 HttpOnly Cookie 中返回，数据库只存 SHA-256 哈希，24 小时有效；切换身份撤销旧 token，登出幂等，DEMO_MODE=false 时旧演示会话失效。
 
 只构建/运行后端，无需构建前端：
 
@@ -55,9 +55,9 @@ HTTP 脚本要求先构建 contracts/api，自动创建临时持久化数据库�
 | 持久化 | 关闭数据库/应用后重新打开，物品、已完成交易和有效 session 可读取 |
 | 远端 CI | PR 的 CI 结果为最终依据，由执行者跟进终态后交协调者审查 |
 | 远端部署 | 未配置部署工作流；GitHub deployments 查询为 0，无线上 URL 可验收 |
-| 真实 LLM | **未验收**；本次未配置真实 provider/model/key，stub 不等于真实成功，保留为 #11 必需门槛 |
+| 真实 LLM | 后续已由 #11 完成累计 5 次真实请求与浏览器采用/发布，见下文及 acceptance.md；stub 不等于真实成功 |
 
-实际发现并修复：SQL LIKE 转义字符的 JavaScript 转义错误；模型超时测试需等待上游 stub 启动后再推进假时钟；HTTP 性能脚本初版 SQL 占位符数量错误。上述修复后均重跑通过，没有将失败项记为通过。真实浏览器联调由 #11 完成；前端独立演示不属于本报告证据。
+实际发现并修复：SQL LIKE 转义字符的 JavaScript 转义错误；模型超时测试需等待上游 stub 启动后再推进假时钟；HTTP 性能脚本初版 SQL 占位符数量错误。上述修复后均重跑通过，没有将失败项记为通过。真实浏览器联调已由 #11 完成，当前全栈结果见 acceptance.md；此处保留后端独立验收时的测试与性能样本。
 
 ## 业务与安全覆盖
 

@@ -1,50 +1,88 @@
 {
-  "kind": "prototype",
-  "source": "docs/prototype",
-  "capturedAt": "2026-09-27T02:01:59.893Z",
+  "kind": "real-http",
+  "capturedAt": "2026-09-27T03:04:16.388Z",
+  "base": "http://127.0.0.1:3130",
+  "isolatedDatabase": true,
+  "modelCallsDuringCapture": 0,
   "pages": [
     {
-      "route": "home",
-      "title": "社区首页",
-      "description": "卡片突出物品、新鲜度、价格和所在楼栋。搜索和交易方式筛选支持组合使用；顶部统计与底部热门信息为原型示例。",
+      "route": "/",
       "file": "home-desktop.png",
-      "viewport": "1440 × 960"
+      "title": "社区首页与数据库看板",
+      "description": "真实 HTTP 读取物品和统计；当前在售包含可领取与已预约。",
+      "viewport": "1280 × 720",
+      "source": "3130 隔离 SQLite / 真实 HTTP 浏览器",
+      "capturedAt": "2026-09-27T03:00:29.229Z"
     },
     {
-      "route": "detail",
-      "title": "物品详情与公开留言",
-      "description": "物品详情集中展示描述、发布者、自提方式和当前状态。用户可表达或撤回想要，公开留言可减少重复私聊。页面交互仅模拟前端状态。",
-      "file": "detail-desktop.png",
-      "viewport": "1440 × 960"
-    },
-    {
-      "route": "publish",
-      "title": "物品发布与 AI 辅助",
-      "description": "左侧填写事实信息，右侧展示固定 AI 建议示例。文案与参考价格分别采用，用户仍可修改；本页没有发出真实模型请求，也不保存业务数据。",
+      "route": "/publish",
       "file": "publish-desktop.png",
-      "viewport": "1440 × 960"
+      "title": "物品发布",
+      "description": "真实发布表单；演示本次手动发布，未调用模型。",
+      "viewport": "1280 × 720",
+      "source": "3130 隔离 SQLite / 真实 HTTP 浏览器",
+      "capturedAt": "2026-09-27T03:00:54.740Z"
     },
     {
-      "route": "handoff",
-      "title": "预约交接与完成",
-      "description": "发布者查看领取人、时间、公共交接地点和确认进度。页面可演示取消、完成二次确认和状态反馈；这些操作未写入后端。",
-      "file": "handoff-desktop.png",
-      "viewport": "1440 × 960"
+      "route": "/items/416a9ea7-9ac6-4c08-99fb-56ca22f80430",
+      "file": "detail-desktop.png",
+      "title": "物品详情",
+      "description": "物品已真实保存；图片、描述、发布者与物品状态来自 HTTP API。",
+      "viewport": "1280 × 720",
+      "source": "3130 隔离 SQLite / 真实 HTTP 浏览器",
+      "capturedAt": "2026-09-27T03:01:01.096Z"
+    },
+    {
+      "route": "/items/416a9ea7-9ac6-4c08-99fb-56ca22f80430",
+      "file": "reservation-desktop.png",
+      "title": "预约与双方交接信息",
+      "description": "发布者选择意向用户和公共地点；真实预约状态为待确认。",
+      "viewport": "1280 × 720",
+      "source": "3130 隔离 SQLite / 真实 HTTP 浏览器",
+      "capturedAt": "2026-09-27T03:01:49.535Z"
+    },
+    {
+      "route": "/items/416a9ea7-9ac6-4c08-99fb-56ca22f80430",
+      "file": "archive-desktop.png",
+      "title": "已送出归档",
+      "description": "本次演示交易已完成并归档；历史详情与留言保留，写操作关闭。",
+      "viewport": "1280 × 720",
+      "source": "3130 隔离 SQLite / 真实 HTTP 浏览器",
+      "capturedAt": "2026-09-27T03:03:34.854Z"
+    },
+    {
+      "route": "/publish",
+      "file": "ai-preview.png",
+      "title": "真实 AI 建议预览（既有验收截图）",
+      "description": "协调者在真实 3000 环境进行第 5 次 DeepSeek 调用：FLEXIBLE/null。核验文案事实后采用并手动发布；本次材料录制没有新增调用，也不声称本次获得数值报价。",
+      "viewport": "1440 × 1000，全页截图",
+      "source": "3000 真实全栈；协调者已完成的第 5 次模型调用，复用原始截图"
+    },
+    {
+      "route": "/items/:id",
+      "file": "ai-published.png",
+      "title": "采用 AI 文案后真实发布（既有验收截图）",
+      "description": "已采用文案与建议交易方式并手动确认发布；详情加载完成后采集。对应上一幅既有真实调用，不是视频录制期间新调用。",
+      "viewport": "1440 × 1000，全页截图",
+      "source": "3000 真实全栈；协调者已完成的发布操作，复用原始截图"
     }
   ],
   "verification": {
-    "desktop": "1440x960",
-    "mobile": "390x844",
-    "overflow": false,
     "consoleErrors": [],
-    "interactions": [
-      "filter",
-      "empty search",
-      "want toggle",
-      "adopt sample description",
-      "adopt sample price",
-      "cancel",
-      "complete confirmation"
+    "desktop": "1280x720",
+    "mobile": "390x720",
+    "overflow": false,
+    "completedDelta": 1,
+    "workflow": [
+      "publish",
+      "interest",
+      "comment",
+      "reserve",
+      "reject",
+      "reserve again",
+      "confirm",
+      "complete",
+      "archive"
     ]
   }
 }

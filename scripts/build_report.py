@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build the Word project report from committed ER diagrams and screenshot evidence.
-Requires python-docx. Run from any working directory.
+Requires python-docx and Pillow. Run from any working directory.
 """
 from pathlib import Path
 import json
@@ -54,6 +54,9 @@ def image(doc,path,caption,width=6):
     p=doc.add_paragraph();p.alignment=WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after=Pt(2)
     p.paragraph_format.keep_with_next=True
+    from PIL import Image
+    with Image.open(path) as im: ratio=im.height/im.width
+    width=min(width,6.4/ratio)
     p.add_run().add_picture(str(path),width=Inches(width))
     p=paragraph(doc,caption,'Caption');p.alignment=WD_ALIGN_PARAGRAPH.CENTER
 
@@ -62,8 +65,8 @@ def new_page(doc,title):
 
 def main():
     OUT.mkdir(exist_ok=True)
-    manifest_path=SCREENSHOTS/'manifest.json'
-    evidence=json.loads(manifest_path.read_text()) if manifest_path.exists() else {'kind':'pending','pages':[]}
+    evidence=json.loads((SCREENSHOTS/'manifest.json').read_text())
+    if evidence['kind']!='real-http': raise ValueError('Final report requires real HTTP evidence')
     d=Document();s=d.sections[0]
     s.page_width=Cm(21);s.page_height=Cm(29.7)
     s.top_margin=Cm(1.8);s.bottom_margin=Cm(1.8);s.left_margin=Cm(2);s.right_margin=Cm(2)
@@ -73,112 +76,102 @@ def main():
     for name,size in [('Title',30),('Subtitle',15),('Heading 1',18),('Heading 2',13),('Heading 3',11)]:
         st=d.styles[name];east_font(st,'PingFang SC');st.font.size=Pt(size);st.font.color.rgb=RGBColor.from_string('18372E')
     east_font(d.styles['Caption']);d.styles['Caption'].font.size=Pt(10)
-    h=s.header.paragraphs[0];h.text='邻里闲置  |  项目设计说明书';h.style='Caption'
+    h=s.header.paragraphs[0];h.text='邻里闲置  |  项目设计与实现说明书';h.style='Caption'
     f=s.footer.paragraphs[0];f.alignment=WD_ALIGN_PARAGRAPH.CENTER
-    f.add_run('第 ')
-    field=OxmlElement('w:fldSimple');field.set(qn('w:instr'),'PAGE');f._p.append(field)
-    f.add_run(' 页')
-    d.core_properties.title='邻里闲置 · 项目设计说明书'
-    d.core_properties.subject='产品说明、Web 页面截图、Chen E-R 图与系统设计'
+    f.add_run('第 ');field=OxmlElement('w:fldSimple');field.set(qn('w:instr'),'PAGE');f._p.append(field);f.add_run(' 页')
+    d.core_properties.title='邻里闲置 · 项目设计与实现说明书'
+    d.core_properties.subject='真实全栈运行、Chen E-R 图、验收与演示视频'
     d.core_properties.author='邻里闲置项目组'
-    for _ in range(4):paragraph(d,'')
+    for _ in range(3):paragraph(d,'')
     p=d.add_paragraph('邻里闲置','Title');p.alignment=WD_ALIGN_PARAGRAPH.CENTER
-    p=d.add_paragraph('项目设计说明书','Subtitle');p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+    p=d.add_paragraph('项目设计与实现说明书','Subtitle');p.alignment=WD_ALIGN_PARAGRAPH.CENTER
     p=paragraph(d,'社区闲置物品流转 Web 应用');p.alignment=WD_ALIGN_PARAGRAPH.CENTER
-    paragraph(d,'')
-    table(d,['项目','说明'],[
-        ('应用形态','移动端优先、兼容桌面浏览器的 Web 应用'),
-        ('文档内容','产品说明、Web 页面截图、技术方案、10 张独立 Chen E-R 图'),
-        ('文档阶段','设计阶段；应用业务与数据库尚未实现'),
-        ('截图类型','本地 Web 页面原型截图，使用虚构数据' if evidence['kind']=='prototype' else '实际运行截图待 Web 功能完成后补入'),
-        ('版本 / 日期','1.0 / 2026-09-27')])
-    paragraph(d,'本报告用于说明产品与数据库设计。实现、真实 LLM 调用、运行测试和部署结果需在开发完成后补充核验；设计图或页面原型不作为全栈验收证据。')
-    new_page(d,'1  项目概述与需求')
-    heading(d,'1.1 场景与目标',2)
-    paragraph(d,'小区群里的闲置物品容易被新消息淹没；领取者难以判断物品是否还在，双方又需要反复私聊约时间和地点。邻里闲置面向同一个小区、楼栋或办公室，以物品卡片、明确状态和预约交接减少这些沟通成本。')
-    paragraph(d,'本次以单一预置社区为范围，采用虚构演示身份和预置图片，优先完成一条可验证的线下交易闭环。')
-    heading(d,'1.2 主要用户与流程',2)
-    paragraph(d,'发布者与领取者都是社区用户，同一用户可在不同物品下承担不同角色。访客可以浏览；写操作由服务端校验身份和权限。')
-    paragraph(d,'发布物品 → 浏览与搜索 → 表达想要 → 发布者选人并预约 → 领取者确认 → 线下交接 → 发布者确认送出 → 归档与统计更新。')
-    table(d,['功能','设计说明'],[
-        ('物品发布','名称、描述、交易方式、预置图片与自提楼栋；支持免费送、随便给、标价。'),
-        ('发现与检索','卡片按发布时间倒序；支持关键词搜索和交易方式筛选；显示新鲜度。'),
-        ('意向与交接','想要、撤回、查看意向人；约定未来 7 天内的时间和公共地点；确认、取消与完成。'),
-        ('留言与归档','公开问答减少重复私聊；已送出保留记录并禁止写操作。'),
-        ('社区看板','本月发布、本月成交、当前在售、最快领走和最想要物品。'),
-        ('LLM 辅助','根据已知事实整理文案和给出参考价；用户选择采用，失败时仍能手动发布。')])
-    heading(d,'1.3 取舍与交付',2)
-    paragraph(d,'不纳入本次基线：支付、快递、即时私聊、信用体系、多社区、真实注册和图片上传。考试交付包括本地可运行全栈应用、5 分钟视频、数据库 E-R 图及技术栈简介；远端部署为可选项。')
-    new_page(d,'2  技术架构与系统规则')
+    table(d,['项目','交付内容'],[
+        ('应用','React 网页、Fastify HTTP API、持久 SQLite、服务端 AI 发布辅助'),
+        ('运行材料','真实页面截图、10 张 Chen E-R 图、约 5 分钟实际操作与讲解视频'),
+        ('本地验收','102 项单元/集成测试、4 项真实 HTTP E2E、5 次真实模型调用'),
+        ('证据范围','隔离数据库录屏；既有真实 AI 截图明确标识；数据为虚构演示数据'),
+        ('部署','本地运行已验收；未做远端部署'),
+        ('版本 / 日期','2.0 / 2026-09-27')])
+    paragraph(d,'应用已实现发布、意向、预约、取消、确认、归档与看板闭环。本报告区分自动化测试、真实模型和材料录制证据；第 5 次模型调用返回随便给，不将其表述为数值报价成功。')
+    new_page(d,'1  项目背景与使用流程')
+    paragraph(d,'小区群里的闲置容易被新消息淹没，领取者难以判断是否还能领，双方需要反复沟通时间地点。邻里闲置通过物品卡片、明确状态和预约交接，让同一社区的邻居完成线下流转。')
+    heading(d,'1.1 范围与角色',2)
+    paragraph(d,'采用单一演示社区和预置虚构身份。访客可浏览；用户可发布、留言或领取别人的物品。发布者和领取者是同一用户实体在不同交易中的角色。物品图使用 30 张 AI 生成的演示图片，页面明确标注，不能当作真实二手物品照片。')
+    table(d,['功能','实现行为'],[
+        ('发现与发布','关键词与交易方式组合筛选；免费送、随便给、标价；预置图片和自提楼栋'),
+        ('意向与留言','表达想要、撤回和重新激活；公开留言；名单仅物主可读'),
+        ('预约交接','物主选择意向人，约定未来 7 天内的时间和公共地点；双方确认或取消'),
+        ('完成归档','物主二次确认后归档；详情留言保留，禁止新写入；统计同步更新'),
+        ('AI 辅助','服务端调用真实模型；严格结构校验；用户主动采用、手动发布；失败保留草稿')])
+    heading(d,'1.2 典型路径',2)
+    paragraph(d,'发布者发布 → 领取者想要和留言 → 物主发起预约 → 领取者确认 → 线下交接 → 物主确认完成 → 归档并更新看板。时间不合适时可取消，再建立新预约；历史取消记录保留。')
+    paragraph(d,'本项目不包含在线支付、快递、即时私聊、真实注册、多社区或用户上传照片。演示身份不能作为生产认证。物理交接由双方线下完成；录屏演示的是软件确认流程。')
+    new_page(d,'2  技术架构与核心实现')
     table(d,['层次','选型','职责'],[
-        ('前端','React + TypeScript + Vite','页面、表单、状态反馈与 API 调用'),
-        ('后端','Node.js + Fastify','身份、权限、参数校验、业务事务与 LLM 接入'),
-        ('数据库','SQLite + Drizzle','物品、意向、留言、交易和会话的持久化'),
-        ('接口契约','OpenAPI 3.1 + 共享 Schema','固定输入、输出与错误结构'),
-        ('验证','Vitest + API 测试 + Playwright','业务规则、权限、并发与双会话端到端验收')])
-    paragraph(d,'浏览器通过同源 /api/v1 访问后端；后端访问 SQLite 并调用模型服务。密钥只放在服务端环境变量中。前端、API 与数据库保持明确边界。工程骨架与共享接口契约已建立，具体业务仍在开发中。')
-    heading(d,'2.1 状态与一致性',2)
-    paragraph(d,'物品：可领取 → 已预约 → 已送出；取消预约后恢复可领取。交易：待确认 → 已确认 → 已完成；待确认或已确认的交易允许双方取消。物主不能领取自己的物品，只有指定领取者能确认预约，只有物主能确认送出。')
-    paragraph(d,'预约创建、取消和完成在事务内校验状态并更新数据。部分唯一索引保证同一物品最多一笔未取消交易；重复确认或完成不会重复成交。交易细节只对双方开放。')
-    heading(d,'2.2 时间、价格与统计',2)
-    paragraph(d,'不足 24 小时为“刚上架”；24 至不足 72 小时为“新上架”；之后按经过整天数展示。金额以整数分保存。月统计按北京时间计算，成交仅统计已完成交易，当前在售含可领取和已预约。')
-    heading(d,'2.3 模型能力的边界',2)
-    paragraph(d,'AI 只根据输入事实优化描述，不擅自补造品牌、成色或故障状况。参考价注明不是行情估价；响应需结构校验，超时或无配置时保留用户输入。最终验收须单独记录一次真实模型调用。')
-    if evidence['pages']:
-        for i,page in enumerate(evidence['pages'],1):
-            new_page(d,f'3.{i}  Web 页面：{page["title"]}')
-            paragraph(d,'截图来源：本地浏览器打开项目 Web 原型后实拍。页面中的数据与 AI 建议为示例；此原型用于说明交互设计，未连接后端、数据库或真实模型。')
-            image(d,SCREENSHOTS/page['file'],f'图 3-{i}  {page["title"]}（Web 原型截图）',6.3)
-            heading(d,'页面说明',2);paragraph(d,page['description'])
-            paragraph(d,f'采集条件：{page["viewport"]} 浏览器视口；对应原型页面：{page["route"]}。')
-    else:
-        new_page(d,'3  Web 页面截图')
-        paragraph(d,'当前尚无可运行 Web 应用，本章等待开发完成后采集实际运行截图。下表明确每张图需要展示的行为；不使用设计图代替运行证据。')
-        table(d,['页面','截图说明'],[('社区首页','物品卡片、新鲜度、搜索筛选与统计'),('物品详情','当前状态、物品信息、想要与留言'),('发布页面','发布表单与 AI 建议的采用方式'),('我的交接','意向用户、时间地点、确认或取消与完成')])
+        ('前端','React / TypeScript / Vite','页面、表单、身份状态、API adapter 和错误反馈'),
+        ('API','Node.js 24 / Fastify','23 个契约操作、会话、权限、参数校验和业务事务'),
+        ('数据','SQLite / Drizzle','6 张表、9 个外键、版本迁移、CHECK 和唯一索引'),
+        ('契约','OpenAPI 3.1 / Zod','统一输入输出与错误结构；运行时校验'),
+        ('AI','服务端 Chat Completions','DeepSeek 发布辅助、超时、限流、输出校验与安全降级'),
+        ('验证','Vitest / Playwright / CI','临时数据库、真实 HTTP、多身份浏览器和构建检查')])
+    paragraph(d,'浏览器经同源 /api/v1 访问后端；后端操作 SQLite 并调用模型服务。生产构建由 Fastify 托管前端，支持页面深链接。密钥只保存在服务端环境，浏览器不接收密钥。数据库记录会话令牌的哈希，Cookie 使用 HttpOnly。')
+    heading(d,'2.1 事务与幂等',2)
+    paragraph(d,'物品状态为可领取、已预约、已送出；交易为待确认、已确认、已完成、已取消。创建预约、取消和完成在同一事务内检查状态并更新。唯一部分索引限制每件物品最多一笔未取消交易；重复完成不重复成交，旧取消请求不影响新预约。')
+    heading(d,'2.2 统计与性能',2)
+    paragraph(d,'金额保存整数分；时间以 UTC 毫秒存储，本月看板按北京时间统计。当前在售包含可领取和已预约。后端隔离性能复核在 1,000 件物品、5 并发、100 次读取下测得 p95 13.75ms；这是本机样本，不是线上容量保证。')
+    for i,page in enumerate(evidence['pages'],1):
+        new_page(d,f'3.{i}  真实运行：{page["title"]}')
+        image(d,SCREENSHOTS/page['file'],f'图 3-{i}  {page["title"]}',6.5)
+        paragraph(d,page['description'])
+        paragraph(d,f'来源：{page["source"]}。采集：{page["viewport"]}；页面：{page["route"]}。')
     new_page(d,'4  数据库概念结构与全局 E-R 图')
-    paragraph(d,'采用 Chen 表示法：矩形表示实体，椭圆表示属性，菱形表示联系，主键属性加下划线，直线无箭头，1 / n 表示联系的最大基数。共包含 6 张实体属性图、3 张局部联系图和 1 张全局图。')
+    paragraph(d,'Chen 表示法：矩形是实体，椭圆是属性，菱形是联系，主键名称加下划线，直线无箭头，1 / n 表示最大基数。共 6 张实体属性图、3 张局部图和 1 张全局图。图内只保留模型结构与名称。')
     image(d,DIAGRAMS/'er-global.png','图 4-1  全局实体联系图',6.0)
-    paragraph(d,'六个实体为用户、登录会话、物品、意向记录、留言和交易记录，实体属性见第 5 节。取消联系可选，交易有零个或一个取消人；物品与交易的一对多包含取消历史，不表示允许同时成交给多人。')
+    paragraph(d,'六个实体为用户、登录会话、物品、意向记录、留言和交易记录，属性见第 5 节。取消联系可选，交易有零个或一个取消人；物品与交易的一对多包含取消历史，不表示同时成交给多人。')
     attrs=[('user','用户'),('session','登录会话'),('item','物品'),('interest','意向记录'),('comment','留言'),('trade','交易记录')]
     for group in range(3):
         new_page(d,f'5.{group+1}  实体属性图')
         for j in range(2):
             i=group*2+j;slug,name=attrs[i]
             image(d,DIAGRAMS/f'attribute-{slug}.png',f'图 5-{i+1}  {name}实体属性图',5.65)
-        if group==0:paragraph(d,'标识属性以椭圆内文字下划线表示。外键通过联系图表达；字段英文名、数据类型和约束见 SRS。')
-    locals=[('publishing','用户发布与登录','一个用户可拥有多个会话、发布多件物品。会话与物品各属于一个用户。'),('interest-comments','物品意向与留言','每条意向或留言关联一个用户和一件物品。同一用户对同一物品只有一条意向记录，撤回后可再次激活。'),('trading','交易交接','每笔交易关联一件物品和一个指定领取者；发布者由物品确定。取消联系可选，取消人必须是双方之一；一件物品可有多次取消历史，但最多一笔未取消交易。')]
+        if group==0:paragraph(d,'标识属性以椭圆内文字下划线表示。外键通过联系图表达；字段英文名、数据类型和约束见迁移核对记录。')
+    locals=[('publishing','用户发布与登录','一个用户可拥有多个会话、发布多件物品。会话和物品各属于一个用户。'),('interest-comments','物品意向与留言','每条意向或留言关联一个用户和一件物品。同一用户对同一物品仅一条意向记录，撤回后可重新激活。'),('trading','交易交接','每笔交易关联一件物品和一个领取者；发布者由物品确定。取消联系可选，取消人限交易双方；每件物品可有多次取消历史，但最多一笔未取消交易。')]
     for i,(slug,name,note) in enumerate(locals,1):
         new_page(d,f'6.{i}  局部实体联系图：{name}')
-        image(d,DIAGRAMS/f'local-{slug}.png',f'图 6-{i}  {name}联系图',6.3)
-        paragraph(d,note)
-    new_page(d,'7  关系模式与完整性约束')
-    table(d,['关系表','主键与关键引用','主要约束'],[
-        ('users','id','昵称与楼栋；用户可同时承担发布和领取角色'),
-        ('sessions','id；user_id → users','token_hash 唯一，仅保存令牌哈希，支持过期'),
-        ('items','id；owner_id → users','交易方式与金额匹配；GIVEN 必须有送出时间'),
-        ('interests','id；item_id、user_id','(item_id,user_id) 联合唯一；active 标记有效状态'),
-        ('comments','id；item_id、author_id','归档物品不可新增留言；正文为纯文本'),
-        ('trades','id；item_id、recipient_id、cancelled_by','状态时间字段一致；取消人可空；未取消交易部分唯一')])
-    paragraph(d,'ID 使用 UUID；数据库时间采用 UTC 毫秒，API 使用带时区的 ISO 8601。外键、CHECK 与唯一索引由迁移建立；跨表身份和状态条件在同一事务中校验。图纸在开发完成后还须对照实际迁移复核。')
-    heading(d,'7.1 关键约束示例',2)
-    paragraph(d,'免费送价格为 0；随便给无固定价格；标价为正整数分。一个物品可以有多次取消的历史交易，但 PENDING、CONFIRMED、COMPLETED 范围内最多一条交易。')
-    paragraph(d,'交易完成时，交易状态与物品状态同时更新，完成时间保持一致。重复完成返回原结果，不新增成交记录；旧取消请求不能影响后续新预约。')
-    new_page(d,'8  开发计划、验证与交付状态')
-    paragraph(d,'GitHub Epic #1 下设 6 个必需交付任务，另有 1 个可选部署任务。工程与契约完成后，完整前端 #9 和完整后端 #4 分别由一个会话独立并行开发，再由 #11 联调、#12 制作最终材料。前端以统一 API 适配层预留接口，开发 Mock 只用于独立交互演示。页面原型与本报告不代表这些开发任务已完成。')
-    table(d,['验证项','验收要求','当前状态'],[
-        ('双角色交易','发布→想要→预约→确认→完成→归档','待实现与验证'),
-        ('权限与并发','越权拒绝、同一物品唯一有效预约、重试幂等','待实现与验证'),
-        ('数据持久化','迁移、种子及服务重启后数据保存','待实现与验证'),
-        ('真实 LLM','成功调用证据与超时/缺配置降级','待配置与验证'),
-        ('Web 截图','截图来源、页面用途和演示数据标注','原型截图已纳入' if evidence['pages'] else '等待实际运行截图'),
-        ('E-R 图','10 张独立 Chen 图已绘制，后续核对实际迁移','设计图已完成'),
-        ('5 分钟视频','可运行 Demo 和实现讲解','待开发完成后录制'),
-        ('CI / 部署','配置后跟踪终态，部署后核验线上','CI 已配置；未部署')])
-    heading(d,'8.1 配套资料',2)
-    paragraph(d,'产品范围：docs/product/PRD.md；系统规格：docs/engineering/SRS.md；图纸与映射：docs/engineering/ERD.md；依赖计划：docs/planning/DAG.md。')
-    paragraph(d,'仓库：https://github.com/luochen211/neighborhood-exchange\n交付 Epic：https://github.com/luochen211/neighborhood-exchange/issues/1')
-    paragraph(d,'后续报告应逐项记录通过、实际失败、跳过与外部阻塞；不得把原型、模拟模型响应或计划中的行为写成已完成的全栈测试结果。')
-    d.save(REPORT)
-    print(REPORT)
+        image(d,DIAGRAMS/f'local-{slug}.png',f'图 6-{i}  {name}联系图',6.3);paragraph(d,note)
+    new_page(d,'7  实际迁移与完整性核对')
+    paragraph(d,'已在独立内存数据库执行 migration001 和 migration002，核验 user_version=2、6 张表、9 个外键及全部属性。v2 仅把物品图片标识白名单扩展到 30 项，没有改变实体或联系；现有 10 张图与迁移一致。')
+    table(d,['关系表','主键与引用','核对的约束'],[
+        ('users','id','昵称、楼栋、创建时间'),
+        ('sessions','id；user_id → users','token_hash 唯一、到期时间晚于创建时间'),
+        ('items','id；owner_id → users','价格与交易方式匹配、GIVEN 送出时间、30 图片标识'),
+        ('interests','id；item_id、user_id','联合唯一与 active 有效状态'),
+        ('comments','id；item_id、author_id','正文长度 CHECK，创建时间'),
+        ('trades','id；item_id、recipient_id、cancelled_by','状态时间 CHECK、可空取消人、未取消交易唯一索引')])
+    paragraph(d,'图展示概念结构。字段类型、最小参与、唯一索引、金额和状态 CHECK 属于逻辑约束，不在图内堆放说明。物主不能领取自己物品、取消人限双方、跨表状态同步等规则由服务端事务和权限检查保证。逐字段记录见 docs/delivery/erd-verification.md。')
+    new_page(d,'8  测试、真实 AI 与已知边界')
+    table(d,['验证','实际结果'],[
+        ('单元与集成','102 项通过；含会话、权限、状态事务、回滚、幂等、月边界、AI 异常'),
+        ('真实 HTTP E2E','4 项通过；双身份完整交易、拒绝重约、30 图片解码、独立进程重启持久化'),
+        ('页面核验','桌面与手机无横向溢出；本次录制无页面脚本错误，成交统计增加 1'),
+        ('真实模型','累计 5 次 DeepSeek 请求：4 次脚本、1 次浏览器；本次交付零新增调用'),
+        ('干净启动','协调者 clone 237b491 后安装、构建、迁移、种子、启动成功；首页、健康、图片 200'),
+        ('远端部署','未部署；GitHub Actions 为 CI，没有 CD 或线上运行验收')])
+    heading(d,'8.1 模型输出的实际质量',2)
+    paragraph(d,'第一次稀疏描述获得 0.01–99,999 元的全范围报价，属于无实用价值的质量失败。已调整提示词并增加服务端拒绝回归。修复后脚本中，稀疏描述返回随便给，充分描述返回 80–150 元；价格仍不是市场行情认证。')
+    paragraph(d,'第五次真实浏览器调用返回 FLEXIBLE/null，即随便给，没有数值报价。协调者逐句核对标题、功能、成色和配件均来自输入，再采用文案与交易方式并手动发布。报告截图复用该次验收，未为获得特定价格再次调用。')
+    paragraph(d,'CI 使用标明的模型 stub，不调用付费服务。已有真实调用与独立浏览器核验单独记录在 acceptance.md / backend.md；两类证据互不替代。')
+    new_page(d,'9  运行、视频与 AI Coding 记录')
+    heading(d,'9.1 本地复现',2)
+    paragraph(d,'使用 Node.js 24 / npm 11：npm ci → npm run build → 创建根 .env → npm run db:migrate → npm run db:seed → npm start。DEMO_MODE=true，APP_ORIGIN 与访问端口一致；默认 http://127.0.0.1:3000。完整配置步骤与检查命令见根 README。')
+    paragraph(d,'数据库路径相对仓库根解析。迁移和种子不会重置已有业务；复现及测试使用独立数据库。模型凭据可选填入本地 .env；缺凭据时 AI 明确报错，手动发布仍可使用。')
+    heading(d,'9.2 实际演示成片',2)
+    paragraph(d,'docs/delivery/邻里闲置_演示视频.mp4：约 5 分钟，包含真实浏览器交易、取消重约、手机界面，以及既有 AI 证据、架构与验收讲解。成片附中文合成讲解音轨、烧录字幕和独立 SRT；镜头来源标明，物理交接未在视频中声称发生。')
+    heading(d,'9.3 AI Coding 与核验',2)
+    paragraph(d,'Codex 辅助需求与接口契约、前后端实现、测试与文档生成。独立任务按完整前端、完整后端和集成验收分工；协调者审查 PR、真实浏览器证据和 CI。关键迭代包括事务与幂等、30 图片迁移、真实模型接入及全范围无效报价修复。')
+    paragraph(d,'自动化完成后仍逐页目视检查截图、10 张 ER 图和 PDF 排版，并核验视频时长、音轨和抽帧。用户提供的学校参考文档未修改；现有用户数据库未用于录制写操作。')
+    paragraph(d,'交付索引：docs/delivery/README.md；验收：acceptance.md；ER 核对：erd-verification.md；视频时间轴与制作证据：video.md。最终 Issue 与 Epic 由协调者在 PR 合并、main CI 核验后关闭。')
+    d.save(REPORT);print(REPORT)
 
 if __name__=='__main__':main()
