@@ -77,13 +77,16 @@ flowchart LR
 
 ## 当前状态快照
 
-读取时刻：`2026-09-27T02:22:47.885956+00:00`。历史 not_planned 任务不计入以下完成数。
+读取时刻：`2026-09-27T02:33:03.458513+00:00`。历史 not_planned 任务不计入以下完成数。
 
-Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 2 | Stale_Claim: 0 | Ready: 0 | Conflict: 0 | Blocked: 3 | Done: 2
+Invalid: 0 | Unknown: 0 | Review: 1 | Claimed: 1 | Stale_Claim: 0 | Ready: 0 | Conflict: 0 | Blocked: 3 | Done: 2
+
+### Review
+
+- #4 实现完整后端 API、数据库与 LLM 服务 — unlocks #11; PR merged; checks success
 
 ### Claimed
 
-- #4 实现完整后端 API、数据库与 LLM 服务 — unlocks #11; claim active by complete backend
 - #9 实现完整 Web 前端与独立 API 适配层 — unlocks #11; claim active by complete web frontend
 
 ### Blocked

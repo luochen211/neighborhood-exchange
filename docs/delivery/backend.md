@@ -31,7 +31,7 @@ curl -f http://127.0.0.1:3000/api/v1/demo/users
 
 前端 dist 不存在时启动明确记录“running API only”，页面返回 JSON 404；API 正常可用。存在前端 dist 时支持 SPA 深链接，API/静态资源 404 不回退为 HTML。生产同源 APP_ORIGIN 使用实际 HTTP(S) origin；本地 Vite 开发则设 `http://127.0.0.1:5173`。写请求带 Origin 时必须精确匹配；无 Origin 的本地 CLI 可用。Cookie 为 neighborhood_session，Path=/、HttpOnly、SameSite=Lax，HTTPS origin 自动 Secure。
 
-根 `db:migrate/db:seed` 快捷命令由协调者串行接入；以上 workspace 命令可立即使用，无新增依赖。
+根目录也可直接运行 `npm run db:migrate` 与 `npm run db:seed`；它们调用相同的 workspace 命令，无新增依赖。
 
 ## 验收命令与证据
 
