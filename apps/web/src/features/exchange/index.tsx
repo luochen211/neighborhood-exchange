@@ -133,6 +133,7 @@ export const tradeLabels = {
 };
 export function TradeCard({ trade }: { trade: Trade }) {
   const { api, user } = useApp();
+  const item = useQuery((s) => api.item(trade.itemId, s), [trade.itemId]);
   const action = useAction();
   const [confirming, setConfirming] = useState(false);
   return (
@@ -141,11 +142,12 @@ export function TradeCard({ trade }: { trade: Trade }) {
         <span className="tag">{tradeLabels[trade.status]}</span>
         <Link to={`/items/${trade.itemId}`}>查看物品 →</Link>
       </div>
-      <h2>
+      <h2>{item.data?.data.title ?? "交接物品"}</h2>
+      <p>
         {user?.id === trade.owner.id
           ? `交给 ${trade.recipient.nickname}`
           : `向 ${trade.owner.nickname} 领取`}
-      </h2>
+      </p>
       <p className="trade-time">
         {dateLabel(trade.meetingStart)} — {dateLabel(trade.meetingEnd)}
       </p>

@@ -14,7 +14,8 @@ import { ReservationForm, TradeCard } from "../exchange";
 function Comments({ item }: { item: Item }) {
   const { api, user, choose } = useApp();
   const [cursor, setCursor] = useState<string | undefined>(),
-    [body, setBody] = useState("");
+    [body, setBody] = useState(""),
+    [sent, setSent] = useState(false);
   const query = useQuery(
     (s) => api.comments(item.id, { cursor }, s),
     [item.id, cursor],
@@ -54,7 +55,10 @@ function Comments({ item }: { item: Item }) {
               e.preventDefault();
               void action.run(
                 () => api.comment(item.id, body.trim()),
-                () => setBody(""),
+                () => {
+                  setBody("");
+                  setSent(true);
+                },
               );
             }}
           >
@@ -64,12 +68,16 @@ function Comments({ item }: { item: Item }) {
               required
               maxLength={500}
               value={body}
-              onChange={(e) => setBody(e.target.value)}
+              onChange={(e) => {
+                setBody(e.target.value);
+                setSent(false);
+              }}
               placeholder="想了解什么，问问邻居…"
             />
             <Button type="submit" disabled={action.busy || !body.trim()}>
               {action.busy ? "发送中…" : "发送留言"}
             </Button>
+            {sent && <p role="status">留言已发送。</p>}
             <ErrorText error={action.error} />
           </form>
         ) : (
