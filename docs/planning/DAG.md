@@ -77,25 +77,22 @@ flowchart LR
 
 ## 当前状态快照
 
-读取时刻：`2026-09-27T02:33:03.458513+00:00`。历史 not_planned 任务不计入以下完成数。
+读取时刻：`2026-09-27T02:58:21+00:00`。历史 not_planned 任务不计入以下完成数。
 
-Invalid: 0 | Unknown: 0 | Review: 1 | Claimed: 1 | Stale_Claim: 0 | Ready: 0 | Conflict: 0 | Blocked: 3 | Done: 2
-
-### Review
-
-- #4 实现完整后端 API、数据库与 LLM 服务 — unlocks #11; PR merged; checks success
+Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 1 | Stale_Claim: 0 | Ready: 0 | Conflict: 0 | Blocked: 1 | Done: 5
 
 ### Claimed
 
-- #9 实现完整 Web 前端与独立 API 适配层 — unlocks #11; claim active by complete web frontend
+- #12 交付运行说明、ER 图、技术简介与演示视频 — codex/final-delivery；2026-09-27T02:58:21Z 认领，待 PR 验收；unlocks #13
 
 ### Blocked
 
-- #11 完成真实前后端联调与验收测试 — blocked by #4, #9; unlocks #12
-- #12 交付运行说明、ER 图、技术简介与演示视频 — blocked by #11; unlocks #13
 - #13 可选：部署受控演示站并验证持久化 — blocked by #12
 
 ### Done
 
 - #3 建立共享 API 契约、类型与前端 Mock — unlocks #4, #9; PR merged; checks success
 - #2 初始化全栈工程、开发命令与 CI — unlocks #3; PR merged; checks success
+- #4 实现完整后端 API、数据库与 LLM 服务 — unlocks #11; PR merged; checks success
+- #9 实现完整 Web 前端与独立 API 适配层 — unlocks #11; PR merged; checks success
+- #11 完成真实前后端联调与验收测试 — unlocks #12; PR merged; checks success
