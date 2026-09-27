@@ -97,31 +97,67 @@ ENTITIES=[
  ('交易记录',[('交易编号',True),'交易状态','交接开始时间','交接结束时间','交接地点','创建时间','确认时间','完成时间','取消时间'])]
 
 
-def attributes_diagram():
-    a=start(2400,2220,'邻里闲置：实体属性图','六个实体的属性分别用椭圆连接；标识属性加下划线。实体间外键由全局联系表达。')
-    text(a,1200,57,'邻里闲置 · 实体属性图',40,True)
-    text(a,1200,110,'矩形：实体    椭圆：属性    下划线：标识属性（主键）',25)
-    for i,(name,attrs) in enumerate(ENTITIES):
-        ox=(i%2)*1200;oy=160+(i//2)*660;cx=ox+600;cy=oy+335
-        text(a,ox+600,oy+35,f'图 {i+1}  {name}实体属性图',29,True)
-        positions=[]
-        for j,attr in enumerate(attrs):
-            angle=-math.pi/2+2*math.pi*j/len(attrs)
-            pos=(cx+440*math.cos(angle),cy+227*math.sin(angle));positions.append(pos)
-            line(a,boundary((cx,cy),pos,'rect',90,38),boundary(pos,(cx,cy),'ellipse',86,31))
-        entity(a,cx,cy,name)
-        for pos,attr in zip(positions,attrs):
-            label,key=attr if isinstance(attr,tuple) else (attr,False)
-            ellipse(a,*pos,label,key)
-    text(a,1200,2170,'外键由全局实体联系图表达；字段英文名、类型和完整性约束见 SRS。',25)
+def attributes_diagram(index, name, attrs):
+    a=start(1200,800,f'邻里闲置：{name}实体属性图','矩形实体、椭圆属性，标识属性加下划线。')
+    text(a,600,55,f'图 {index}  {name}实体属性图',34,True)
+    cx,cy=600,420
+    positions=[]
+    for j,attr in enumerate(attrs):
+        angle=-math.pi/2+2*math.pi*j/len(attrs)
+        pos=(cx+440*math.cos(angle),cy+235*math.sin(angle));positions.append(pos)
+        line(a,boundary((cx,cy),pos,'rect',90,38),boundary(pos,(cx,cy),'ellipse',86,31))
+    entity(a,cx,cy,name)
+    for pos,attr in zip(positions,attrs):
+        label,key=attr if isinstance(attr,tuple) else (attr,False)
+        ellipse(a,*pos,label,key)
+    text(a,600,755,'下划线表示标识属性；实体间引用见局部和全局实体联系图。',22)
     return finish(a)
+
+
+def local_diagram(index, title, nodes, edges, note):
+    a=start(1400,1000,title,'Chen 局部实体联系图，连接线无箭头，1/n 为最大基数。')
+    text(a,700,60,f'图 {index}  {title}',34,True)
+    for left,r,label,right,o1,o2 in edges:
+        connect(a,nodes[left],r,'1',o1)
+        connect(a,nodes[right],r,'n',o2)
+    for _,r,label,*_ in edges: relation(a,*r,label)
+    for label,pos in nodes.items(): entity(a,*pos,label)
+    text(a,700,945,note,22)
+    return finish(a)
+
+
+def diagrams():
+    names=['user','session','item','interest','comment','trade']
+    result=[(f'attribute-{slug}',attributes_diagram(i,name,attrs))
+            for i,(slug,(name,attrs)) in enumerate(zip(names,ENTITIES),1)]
+    result.append(('local-publishing',local_diagram(7,'用户发布与登录联系图',
+        {'用户':(260,500),'登录会话':(1100,270),'物品':(1100,730)},
+        [('用户',(680,380),'拥有','登录会话',(0,-26),(0,-26)),
+         ('用户',(680,620),'发布','物品',(0,26),(0,26))],
+        '用户可拥有多个登录会话、发布多件物品；会话和物品各属于一个用户。')))
+    result.append(('local-interest-comments',local_diagram(8,'物品意向与留言联系图',
+        {'用户':(180,500),'物品':(1220,500),'意向记录':(700,220),'留言':(700,780)},
+        [('用户',(420,340),'表达','意向记录',(0,-25),(0,-25)),
+         ('物品',(980,340),'收到','意向记录',(0,-25),(0,-25)),
+         ('用户',(420,660),'撰写','留言',(0,25),(0,25)),
+         ('物品',(980,660),'包含','留言',(0,25),(0,25))],
+        '每条意向或留言关联一个用户和一件物品；同一用户对同一物品只有一条意向记录。')))
+    result.append(('local-trading',local_diagram(9,'交易交接联系图',
+        {'用户':(220,260),'物品':(1180,260),'交易记录':(800,760)},
+        [('用户',(700,260),'发布','物品',(0,-25),(0,-25)),
+         ('用户',(550,500),'领取','交易记录',(5,-25),(5,-25)),
+         ('用户',(220,760),'取消','交易记录',(-26,0),(0,26)),
+         ('物品',(1130,590),'记录','交易记录',(26,0),(0,26))],
+        '一件物品可有多次取消历史，但最多一笔未取消交易；取消人为可选，限交易双方。')))
+    result.append(('er-global',global_diagram()))
+    return result
 
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     renderer=shutil.which('rsvg-convert')
     if not renderer: raise SystemExit('Install librsvg / rsvg-convert to export the diagrams.')
-    for name,content in [('er-global',global_diagram()),('er-attributes',attributes_diagram())]:
+    for name,content in diagrams():
         svg=OUT/f'{name}.svg';svg.write_text(content,encoding='utf-8')
         subprocess.run([renderer,str(svg),'-o',str(OUT/f'{name}.png')],check=True)
     print('Generated Chen SVG sources and PNG exports in',OUT)

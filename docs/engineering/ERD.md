@@ -2,9 +2,9 @@
 
 本项目采用参考实验报告中的概念结构表示方式：矩形表示实体，椭圆表示属性，菱形表示联系，标识属性加下划线，连接线无箭头，联系两端标注最大基数 `1` / `n`。
 
-图纸分为全局实体联系图和实体属性图，使用中文实体名与属性名。状态：设计阶段；数据库字段、类型和约束见 [SRS](SRS.md)，实施后须与实际迁移同步核验。
+共 10 张独立图纸：6 张实体属性图、3 张局部实体联系图、1 张全局实体联系图，使用中文实体名与属性名。状态：设计阶段；数据库字段、类型和约束见 [SRS](SRS.md)，实施后须与实际迁移同步核验。
 
-## 1. 全局实体联系图
+## 1. 全局实体联系图（图 10）
 
 ![邻里闲置全局实体联系图](diagrams/er-global.png)
 
@@ -14,13 +14,65 @@
 
 ## 2. 实体属性图
 
-![邻里闲置实体属性图](diagrams/er-attributes.png)
+### 图 1：用户实体属性图
 
-[SVG 矢量源图](diagrams/er-attributes.svg) · [PNG 图片](diagrams/er-attributes.png)
+![用户实体属性图](diagrams/attribute-user.png)
+
+[SVG](diagrams/attribute-user.svg) · [PNG](diagrams/attribute-user.png)
+
+### 图 2：登录会话实体属性图
+
+![登录会话实体属性图](diagrams/attribute-session.png)
+
+[SVG](diagrams/attribute-session.svg) · [PNG](diagrams/attribute-session.png)
+
+### 图 3：物品实体属性图
+
+![物品实体属性图](diagrams/attribute-item.png)
+
+[SVG](diagrams/attribute-item.svg) · [PNG](diagrams/attribute-item.png)
+
+### 图 4：意向记录实体属性图
+
+![意向记录实体属性图](diagrams/attribute-interest.png)
+
+[SVG](diagrams/attribute-interest.svg) · [PNG](diagrams/attribute-interest.png)
+
+### 图 5：留言实体属性图
+
+![留言实体属性图](diagrams/attribute-comment.png)
+
+[SVG](diagrams/attribute-comment.svg) · [PNG](diagrams/attribute-comment.png)
+
+### 图 6：交易记录实体属性图
+
+![交易记录实体属性图](diagrams/attribute-trade.png)
+
+[SVG](diagrams/attribute-trade.svg) · [PNG](diagrams/attribute-trade.png)
 
 每个实体的编号为标识属性，以椭圆内文字下划线表示。实体间引用由全局图中的联系表达，逻辑表中的外键对应关系见下表；属性图展示其余字段。物品的“价格”对应整数分，“发布时间”对应 created_at，“送出时间”对应 given_at，其他字段映射遵循 SRS。
 
-## 3. 联系与关系模式映射
+## 3. 局部实体联系图
+
+### 图 7：用户发布与登录联系图
+
+![用户发布与登录联系图](diagrams/local-publishing.png)
+
+[SVG](diagrams/local-publishing.svg) · [PNG](diagrams/local-publishing.png)
+
+### 图 8：物品意向与留言联系图
+
+![物品意向与留言联系图](diagrams/local-interest-comments.png)
+
+[SVG](diagrams/local-interest-comments.svg) · [PNG](diagrams/local-interest-comments.png)
+
+### 图 9：交易交接联系图
+
+![交易交接联系图](diagrams/local-trading.png)
+
+[SVG](diagrams/local-trading.svg) · [PNG](diagrams/local-trading.png)
+
+## 4. 联系与关系模式映射
 
 `1:n` 表示左侧一个实体最多关联右侧多个实体。最大基数不表示必须存在记录；最小参与约束单独说明。
 
@@ -42,7 +94,7 @@
 
 交易的发布者通过所属物品确定；取消人必须是交易双方之一。GIVEN 与 COMPLETED 状态同步、权限及跨表业务条件由同一事务保证。单社区名称来自配置，不额外建立社区管理实体。
 
-## 4. 图纸维护与导出
+## 5. 图纸维护与导出
 
 生成脚本：[scripts/render_erd.py](../../scripts/render_erd.py)。SVG 是可编辑矢量图，PNG 可直接插入文档或视频；两者均已提交仓库。
 
@@ -52,4 +104,4 @@
 python3 scripts/render_erd.py
 ```
 
-更改实体、属性或联系时，同步 SRS、生成脚本及两组输出，再检查中文显示、连线、基数和下划线。后续考试交付仍须将图与实际数据库迁移核对，不能以设计图已经导出代替数据库验收。
+更改实体、属性或联系时，同步 SRS、生成脚本及 10 张图的 SVG / PNG 输出，再检查中文显示、连线、基数和下划线。后续考试交付仍须将图与实际数据库迁移核对，不能以设计图已经导出代替数据库验收。

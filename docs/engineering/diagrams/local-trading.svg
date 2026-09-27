@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-labelledby="title desc">
+<title id="title">交易交接联系图</title><desc id="desc">Chen 局部实体联系图，连接线无箭头，1/n 为最大基数。</desc>
+<rect width="1400" height="1000" fill="white"/>
+<g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
+<text x="700" y="60" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 9  交易交接联系图</text>
+<line x1="310" y1="260" x2="624" y2="260" stroke="#111" stroke-width="2"/>
+<text x="379.08" y="235" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="1090" y1="260" x2="776" y2="260" stroke="#111" stroke-width="2"/>
+<text x="1020.92" y="235" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="272.25" y1="298" x2="515.479" y2="474.894" stroke="#111" stroke-width="2"/>
+<text x="330.76" y="311.917" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="763.462" y1="722" x2="577.959" y2="529.077" stroke="#111" stroke-width="2"/>
+<text x="727.651" y="654.557" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="220" y1="298" x2="220" y2="714" stroke="#111" stroke-width="2"/>
+<text x="194" y="389.52" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="710" y1="760" x2="296" y2="760" stroke="#111" stroke-width="2"/>
+<text x="618.92" y="786" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<line x1="1174.24" y1="298" x2="1136.38" y2="547.864" stroke="#111" stroke-width="2"/>
+<text x="1191.91" y="352.97" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
+<line x1="873.765" y1="722" x2="1088.94" y2="611.15" stroke="#111" stroke-width="2"/>
+<text x="921.104" y="723.613" font-size="25" text-anchor="middle" dominant-baseline="central">n</text>
+<polygon points="700,214 776,260 700,306 624,260" fill="white" stroke="#111" stroke-width="2"/>
+<text x="700" y="260" font-size="25" text-anchor="middle" dominant-baseline="central">发布</text>
+<polygon points="550,454 626,500 550,546 474,500" fill="white" stroke="#111" stroke-width="2"/>
+<text x="550" y="500" font-size="25" text-anchor="middle" dominant-baseline="central">领取</text>
+<polygon points="220,714 296,760 220,806 144,760" fill="white" stroke="#111" stroke-width="2"/>
+<text x="220" y="760" font-size="25" text-anchor="middle" dominant-baseline="central">取消</text>
+<polygon points="1130,544 1206,590 1130,636 1054,590" fill="white" stroke="#111" stroke-width="2"/>
+<text x="1130" y="590" font-size="25" text-anchor="middle" dominant-baseline="central">记录</text>
+<rect x="130" y="222" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="220" y="260" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">用户</text>
+<rect x="1090" y="222" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="1180" y="260" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">物品</text>
+<rect x="710" y="722" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="800" y="760" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">交易记录</text>
+<text x="700" y="945" font-size="22" text-anchor="middle" dominant-baseline="central">一件物品可有多次取消历史，但最多一笔未取消交易；取消人为可选，限交易双方。</text>
+</g>
+</svg>

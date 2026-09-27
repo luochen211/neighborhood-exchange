@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title id="title">邻里闲置：物品实体属性图</title><desc id="desc">矩形实体、椭圆属性，标识属性加下划线。</desc>
+<rect width="1200" height="800" fill="white"/>
+<g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
+<text x="600" y="55" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 3  物品实体属性图</text>
+<line x1="600" y1="382" x2="600" y2="216" stroke="#111" stroke-width="2"/>
+<line x1="645.725" y1="382" x2="803.661" y2="250.745" stroke="#111" stroke-width="2"/>
+<line x1="690" y1="398.048" x2="929.012" y2="339.75" stroke="#111" stroke-width="2"/>
+<line x1="690" y1="426.911" x2="951.409" y2="446.985" stroke="#111" stroke-width="2"/>
+<line x1="682.11" y1="458" x2="879.684" y2="549.436" stroke="#111" stroke-width="2"/>
+<line x1="620.891" y1="458" x2="707.245" y2="615.072" stroke="#111" stroke-width="2"/>
+<line x1="579.109" y1="458" x2="492.755" y2="615.072" stroke="#111" stroke-width="2"/>
+<line x1="517.89" y1="458" x2="320.316" y2="549.436" stroke="#111" stroke-width="2"/>
+<line x1="510" y1="426.911" x2="248.591" y2="446.985" stroke="#111" stroke-width="2"/>
+<line x1="510" y1="398.048" x2="270.988" y2="339.75" stroke="#111" stroke-width="2"/>
+<line x1="554.275" y1="382" x2="396.339" y2="250.745" stroke="#111" stroke-width="2"/>
+<rect x="510" y="382" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
+<text x="600" y="420" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">物品</text>
+<ellipse cx="600" cy="185" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="600" y="185" font-size="23" text-anchor="middle" dominant-baseline="central" text-decoration="underline">物品编号</text>
+<ellipse cx="837.882" cy="222.305" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="837.882" y="222.305" font-size="23" text-anchor="middle" dominant-baseline="central">名称</text>
+<ellipse cx="1000.24" cy="322.377" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="1000.24" y="322.377" font-size="23" text-anchor="middle" dominant-baseline="central">描述</text>
+<ellipse cx="1035.52" cy="453.444" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="1035.52" y="453.444" font-size="23" text-anchor="middle" dominant-baseline="central">交易方式</text>
+<ellipse cx="932.53" cy="573.892" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="932.53" y="573.892" font-size="23" text-anchor="middle" dominant-baseline="central">价格</text>
+<ellipse cx="723.962" cy="645.481" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="723.962" y="645.481" font-size="23" text-anchor="middle" dominant-baseline="central">图片标识</text>
+<ellipse cx="476.038" cy="645.481" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="476.038" y="645.481" font-size="23" text-anchor="middle" dominant-baseline="central">自提楼栋</text>
+<ellipse cx="267.47" cy="573.892" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="267.47" y="573.892" font-size="23" text-anchor="middle" dominant-baseline="central">物品状态</text>
+<ellipse cx="164.479" cy="453.444" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="164.479" y="453.444" font-size="23" text-anchor="middle" dominant-baseline="central">发布时间</text>
+<ellipse cx="199.762" cy="322.377" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="199.762" y="322.377" font-size="23" text-anchor="middle" dominant-baseline="central">更新时间</text>
+<ellipse cx="362.118" cy="222.305" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="362.118" y="222.305" font-size="23" text-anchor="middle" dominant-baseline="central">送出时间</text>
+<text x="600" y="755" font-size="22" text-anchor="middle" dominant-baseline="central">下划线表示标识属性；实体间引用见局部和全局实体联系图。</text>
+</g>
+</svg>
