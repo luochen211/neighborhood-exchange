@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { fixture, NOW } from "./test-support.js";
+import { fixture, NOW, itemBody } from "./test-support.js";
 import { readConfig } from "./plugins/config.js";
 import { AI_DISCLAIMER } from "@neighborhood/contracts";
 const config = readConfig({
@@ -51,6 +51,27 @@ describe("LLM adapter (explicit stub; not real provider acceptance)", () => {
     expect(f.db.sqlite.prepare("SELECT count(*) n FROM items").get()).toEqual({
       n: 0,
     });
+  });
+  it("rejects a full-domain price suggestion and preserves manual publishing", async () => {
+    const f = await fixture({ config, fetcher: async () => response({
+      ...suggestion, suggestedTradeMode: "FIXED",
+      suggestedPriceRangeCents: { min: 1, max: 9999900 },
+    }) });
+    const user = await f.login();
+    const r = await f.call("assistListing", { body: input }, user);
+    expect(r.statusCode).toBe(502);
+    expect(r.json().error.code).toBe("AI_INVALID_RESPONSE");
+    expect(f.db.sqlite.prepare("SELECT count(*) n FROM items").get()).toEqual({ n: 0 });
+    expect((await f.call("createItem", { body: itemBody }, user)).statusCode).toBe(201);
+  });
+  it.each([
+    { suggestedTradeMode: "FIXED", suggestedPriceRangeCents: { min: 5000, max: 8000 } },
+    { suggestedTradeMode: "FLEXIBLE", suggestedPriceRangeCents: null },
+  ])("accepts bounded pricing or honest insufficient-information suggestions: %j", async (pricing) => {
+    const f = await fixture({ config, fetcher: async () => response({ ...suggestion, ...pricing }) });
+    const r = await f.call("assistListing", { body: input }, await f.login());
+    expect(r.statusCode).toBe(200);
+    expect(r.json().data).toMatchObject(pricing);
   });
   it.each([
     ["https://api.deepseek.com", true],
