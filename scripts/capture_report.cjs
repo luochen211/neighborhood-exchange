@@ -8,9 +8,12 @@ const path=require('node:path');
 const assert=require('node:assert/strict');
 const base=process.env.DELIVERY_URL || 'http://127.0.0.1:3130';
 if (new URL(base).port!=='3130' || process.env.DELIVERY_ISOLATED!=='true') throw Error('Use explicitly isolated port 3130 with DELIVERY_ISOLATED=true');
-const out=path.resolve(__dirname,'../docs/delivery/screenshots');
+const out=path.resolve(process.env.DELIVERY_SCREENSHOTS || path.join(__dirname,'../docs/delivery/screenshots'));
 const raw=path.resolve(process.env.DELIVERY_WORK || path.join(__dirname,'../../final-video'));
-const pages=[], scenes=[], errors=[], states={};
+const pages=[], scenes=[], errors=[], states={}, events=[];
+let activeScene=0,sceneStart=0;
+const event=(kind,details)=>events.push({scene:activeScene,seconds:Number(((Date.now()-sceneStart)/1000).toFixed(2)),kind,...details});
+async function type(p,label,text){const field=p.getByLabel(label,{exact:true});await field.scrollIntoViewIfNeeded();await field.click();await field.pressSequentially(text,{delay:65});event('input',{label});await p.waitForTimeout(700);}
 const localTime=ms=>{const d=new Date(ms);return new Date(ms-d.getTimezoneOffset()*60000).toISOString().slice(0,16)};
 let browser,itemUrl,baseline;
 async function ready(p){await p.waitForLoadState('networkidle');await p.locator('.mode-banner').waitFor();assert(!((await p.locator('.mode-banner').innerText()).includes('Mock')));}
@@ -23,14 +26,36 @@ async function screenshot(p,slug,title,description,fullPage=false){
 async function login(p,name){await p.locator('.identity').click();await p.getByRole('dialog').getByRole('button',{name:new RegExp(name)}).click();await p.getByRole('dialog').waitFor({state:'hidden'});}
 async function scene(n,title,role,route,lines,fn){
  const ctx=await browser.newContext({viewport:{width:1280,height:720},recordVideo:{dir:raw,size:{width:1280,height:720}},storageState:states[role]});
+ await ctx.addInitScript(()=>{
+  addEventListener('DOMContentLoaded',()=>{
+   const cursor=document.createElement('div');cursor.id='delivery-pointer';
+   cursor.style.cssText='position:fixed;left:-30px;top:-30px;width:13px;height:18px;clip-path:polygon(0 0,0 100%,35% 73%,55% 100%,75% 90%,55% 63%,100% 63%);background:#162e25;filter:drop-shadow(0 0 1px white);pointer-events:none;z-index:2147483647';
+   document.body.append(cursor);
+   addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'});
+   addEventListener('mousedown',()=>{cursor.style.background='#d08835'});
+   addEventListener('mouseup',()=>{cursor.style.background='#162e25'});
+  });
+ });
  const p=await ctx.newPage(); p.on('pageerror',e=>errors.push(e.message));
  // Abort accidental AI requests rather than risk invoking a provider during delivery.
  await p.route('**/api/v1/ai/**',r=>{throw Error('Model calls are forbidden in delivery capture: '+r.request().url())});
- const start=Date.now();await p.goto(base+route);await ready(p);
- await fn(p,ctx);await p.waitForTimeout(Math.max(0,24500-(Date.now()-start)));
+ const start=Date.now();activeScene=n;sceneStart=start;
+ p.on('response',r=>{if(r.url().includes('/api/v1/'))event('http',{method:r.request().method(),path:new URL(r.url()).pathname,status:r.status()})});
+ await p.goto(base+route);await ready(p);await p.waitForTimeout(1200);
+ await fn(p,ctx);
+ // Use the remaining narration time to inspect the real account view and return
+ // to the result. No repeated footage, frozen padding, or decorative fake motion.
+ if(25000-(Date.now()-start)>10000){
+  const resultRoute=p.url();await p.waitForTimeout(1200);
+  await p.getByRole('link',{name:'我的',exact:true}).click();await ready(p);event('account-review',{});
+  await p.waitForTimeout(1800);await p.evaluate(()=>window.scrollBy({top:420,behavior:'smooth'}));await p.waitForTimeout(1800);
+  await p.goto(resultRoute);await ready(p);event('return-to-result',{});await p.waitForTimeout(1500);
+ }
+ if(25000-(Date.now()-start)>5500){await p.evaluate(()=>window.scrollBy({top:350,behavior:'smooth'}));await p.waitForTimeout(2200);await p.evaluate(()=>window.scrollTo({top:0,behavior:'smooth'}));await p.waitForTimeout(1500);}
+ await p.waitForTimeout(Math.max(1200,25000-(Date.now()-start)));event('scene-complete',{});
  states[role]=await ctx.storageState();const video=p.video();await ctx.close();
  const file=path.join(raw,`${String(n).padStart(2,'0')}.webm`);await video.saveAs(file);
- scenes.push({number:n,title,source:'真实HTTP录屏 · 隔离演示数据 · 127.0.0.1:3130',video:file,lines});
+ scenes.push({number:n,title,recordedSeconds:(Date.now()-start)/1000,source:'真实HTTP录屏 · 隔离演示数据 · 127.0.0.1:3130',video:file,lines});
  fs.writeFileSync(path.join(raw,'scenes.json'),JSON.stringify(scenes,null,2));
  console.log(`Recorded ${n}: ${title}`);
 }
@@ -43,18 +68,21 @@ async function scene(n,title,role,route,lines,fn){
  '支持搜索和交易方式筛选；图片是生成的演示图片。'],async(p,ctx)=>{
  baseline=(await (await ctx.request.get(base+'/api/v1/dashboard')).json()).data;
  await screenshot(p,'home-desktop','社区首页与数据库看板','真实 HTTP 读取物品和统计；当前在售包含可领取与已预约。');
- await p.waitForTimeout(6000);await p.getByRole('button',{name:'免费送',exact:true}).click();await p.waitForTimeout(4000);
+ await type(p,'搜索闲置','木椅');await p.getByRole('button',{name:'搜索',exact:true}).click();await p.waitForTimeout(1200);await p.locator('.section-heading').evaluate(e=>e.scrollIntoView({block:'start',behavior:'smooth'}));await p.waitForTimeout(1500);assert(await p.getByText('闲置木椅',{exact:true}).count());event('search-result',{query:'木椅'});
+ await p.getByRole('button',{name:'免费送',exact:true}).click();await p.locator('.section-heading').evaluate(e=>e.scrollIntoView({block:'start',behavior:'smooth'}));await p.waitForTimeout(2200);event('filter',{mode:'FREE'});
+ await p.getByRole('link',{name:/闲置木椅/}).first().click();await p.waitForURL(/\/items\//);await ready(p);await p.evaluate(()=>window.scrollBy({top:250,behavior:'smooth'}));await p.waitForTimeout(2000);event('detail-open',{});await p.goBack();await ready(p);
+ await p.getByLabel('搜索闲置').fill('');await p.getByRole('button',{name:'搜索',exact:true}).click();await p.waitForTimeout(1200);
  await p.getByRole('button',{name:'全部',exact:true}).click();await login(p,'林小禾');
  });
  await scene(2,'发布者填写事实并手动发布','owner','/publish',[
  '发布者林小禾填写木椅的真实情况、交易方式和楼栋。',
  '本次选择免费送，使用预置图片，不发起新的模型请求。',
  '点击确认发布后，后端写入数据库，进入物品详情。'],async p=>{
- await p.getByLabel('物品名称',{exact:true}).fill('邻里演示 · 实木餐椅');
- await p.getByLabel('物品描述',{exact:true}).fill('虚构演示物品：搬家转让实木餐椅，椅面有轻微划痕，结构稳固。免费送，社区公共活动室自取。');
+ await type(p,'物品名称','邻里演示 · 实木餐椅');
+ await type(p,'物品描述','虚构演示物品：实木餐椅，椅面轻微划痕，结构稳固。免费送，公共活动室自取。');
  await p.getByLabel('自提楼栋',{exact:true}).fill('1 号楼');
  await screenshot(p,'publish-desktop','物品发布','真实发布表单；演示本次手动发布，未调用模型。');
- await p.waitForTimeout(6000);await p.getByRole('button',{name:'确认发布',exact:true}).click();await p.waitForURL(/\/items\//);itemUrl=new URL(p.url()).pathname;
+ await p.waitForTimeout(1500);await p.getByRole('button',{name:'确认发布',exact:true}).click();await p.waitForURL(/\/items\//);itemUrl=new URL(p.url()).pathname;
  await screenshot(p,'detail-desktop','物品详情','物品已真实保存；图片、描述、发布者与物品状态来自 HTTP API。');
  });
  await scene(3,'领取者表达意向并公开留言','recipient',itemUrl,[
@@ -63,13 +91,13 @@ async function scene(n,title,role,route,lines,fn){
  '公开留言询问交接事项，让其他邻居也能看到答复。'],async p=>{
  await login(p,'周同学');await p.waitForTimeout(3500);await p.getByRole('button',{name:'我想要',exact:true}).click();
  await p.getByRole('button',{name:'撤回意向',exact:true}).waitFor();await p.waitForTimeout(3000);
- await p.getByLabel('留言内容').fill('周末可以到公共活动室领取，谢谢！');await p.getByRole('button',{name:'发送留言',exact:true}).click();
+ await type(p,'留言内容','周末可以到公共活动室领取，谢谢！');await p.getByRole('button',{name:'发送留言',exact:true}).click();
  await p.getByText('留言已发送。',{exact:true}).waitFor();
  });
  const reserve=async p=>{
  await p.getByLabel('领取人',{exact:true}).selectOption({label:'周同学 · 3 号楼'});
  await p.getByLabel('开始时间').fill(localTime(Date.now()+3600000));await p.getByLabel('结束时间').fill(localTime(Date.now()+7200000));
- await p.getByLabel('公共交接地点').fill('社区公共活动室门口');await p.waitForTimeout(4000);
+ await type(p,'公共交接地点','社区公共活动室门口');await p.waitForTimeout(4000);
  await p.getByRole('button',{name:'发起预约',exact:true}).click();await p.getByText('等待领取人确认',{exact:true}).waitFor();
  };
  await scene(4,'发布者选择领取人并预约','owner',itemUrl,[
@@ -116,7 +144,7 @@ async function scene(n,title,role,route,lines,fn){
  '页面兼容手机浏览器，物品、状态和操作保持清楚。',
  '本次录制的完整交易使用真实接口，没有操作用户数据库。'],async(p,ctx)=>{
  const after=(await (await ctx.request.get(base+'/api/v1/dashboard')).json()).data;assert.equal(after.completedThisMonth,baseline.completedThisMonth+1);
- await p.waitForTimeout(7000);await p.setViewportSize({width:390,height:720});await ready(p);
+ await p.waitForTimeout(7000);await p.setViewportSize({width:390,height:720});event('viewport',{width:390,height:720});await ready(p);
  await p.screenshot({path:path.join(out,'home-mobile.png'),fullPage:true});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await p.waitForTimeout(5000);await p.goto(base+itemUrl);await ready(p);await p.screenshot({path:path.join(out,'archive-mobile.png'),fullPage:true});
  });
@@ -125,5 +153,6 @@ async function scene(n,title,role,route,lines,fn){
  {route:'/items/:id',file:'ai-published.png',title:'采用 AI 文案后真实发布（既有验收截图）',description:'已采用文案与建议交易方式并手动确认发布；详情加载完成后采集。对应上一幅既有真实调用，不是视频录制期间新调用。',viewport:'1440 × 1000，全页截图',source:'3000 真实全栈；协调者已完成的发布操作，复用原始截图'});
  const manifest={kind:'real-http',capturedAt:new Date().toISOString(),base,isolatedDatabase:true,modelCallsDuringCapture:0,pages,verification:{consoleErrors:errors,desktop:'1280x720',mobile:'390x720',overflow:false,completedDelta:1,workflow:['publish','interest','comment','reserve','reject','reserve again','confirm','complete','archive']}};
  fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+ fs.writeFileSync(path.join(raw,'capture-events.json'),JSON.stringify({isolatedDatabase:true,modelCalls:0,events},null,2)+'\n');
  await browser.close();console.log('PASS: real HTTP delivery capture, no model calls, complete transaction and cancellation');
 })().catch(async e=>{console.error(e);await browser?.close();process.exitCode=1});

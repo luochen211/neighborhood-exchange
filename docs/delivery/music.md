@@ -10,18 +10,16 @@
 - **层次**：前奏渐入、完整律动、AI/架构段落减配、尾声渐弱，章节切换加入短扫音和提示音。
 - **混音**：保持原中文旁白；音乐受旁白侧链压缩控制，讲解时自动变轻，句间恢复。最终立体声混音按 -16 LUFS / -1.5 dBTP 目标处理，不用音乐覆盖信息。
 
-生成代码：[score_delivery_music.py](../../scripts/score_delivery_music.py)。视频排版、动效和自动混音由 [style_delivery_video.py](../../scripts/style_delivery_video.py) 执行；完整制作入口仍为 [render_delivery_video.cjs](../../scripts/render_delivery_video.cjs)。
-
-单独重建配乐：
+生成代码：[score_delivery_music.py](../../scripts/score_delivery_music.py)。[音频制作入口](../../scripts/prepare_delivery_audio.cjs) 生成旁白与侧链混音；[Remotion 工程](../../video/README.md) 完成唯一的最终画面/音轨渲染。
 
 ```sh
+# 单独重建配乐
 python3 scripts/score_delivery_music.py /tmp/neighborhood-score.wav
+# 重建旁白与混音；需 macOS say、FFmpeg、NumPy
+node scripts/prepare_delivery_audio.cjs
+# 用已保存真实录像及混音渲染成片
+npm ci --prefix video
+npm run render --prefix video
 ```
 
-在保留已有逐段录屏、旁白组装文件和来源 JSON 的工作目录中重新制作画面/混音：
-
-```sh
-python3 scripts/style_delivery_video.py --work /absolute/path/to/final-video
-```
-
-依赖：NumPy、Pillow、FFmpeg，以及当前脚本使用的 macOS 系统中文字体。原始旁白、证据截图与字幕语义没有改变，配乐不被当作新的真实操作证据。
+Remotion 依赖由 video/package-lock.json 锁定。既有旁白、字幕语义与 AI 证据保留；配乐不被当作新的真实操作证据。

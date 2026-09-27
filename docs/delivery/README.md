@@ -1,6 +1,6 @@
 # 最终交付索引
 
-本地全栈应用已实现并完成真实 HTTP 验收。当前报告 20 页，内含 7 张真实运行截图及 10 张独立 Chen E-R 图；实际成片约 5 分钟，带原创 BGM、中文合成讲解和字幕，采用 1080p 宽屏与章节动效。材料 PR #23 已合并为 `604a60a`，对应 main CI `36290725973` 成功；协调者独立审阅完成，#12 与 Epic #1 已验收关闭。
+本地全栈应用已实现并完成真实 HTTP 验收。当前报告 20 页，内含 7 张真实运行截图及 10 张独立 Chen E-R 图；实际成片约 5 分钟，带原创 BGM、中文合成讲解和字幕，采用 Remotion 合成的 1080p 宽屏，标题、网页与字幕分区。材料 PR #23 已合并为 `604a60a`，对应 main CI `36290725973` 成功；协调者独立审阅完成，#12 与 Epic #1 已验收关闭。
 
 | 材料 | 文件 |
 | --- | --- |
@@ -23,7 +23,7 @@
 
 ## 重新生成材料
 
-日常应用运行见根 README。以下流程只面向材料重录，须使用新的**隔离数据库**，不能指向现有用户数据库。Python 需 `python-docx` / Pillow / NumPy；需安装 `rsvg-convert`、Playwright Chromium、LibreOffice、Poppler、FFmpeg/ffprobe。视频脚本使用 macOS `say` 的婷婷中文语音与系统黑体，不调用在线语音服务。
+日常应用运行见根 README。以下流程只面向材料重录，须使用新的**隔离数据库**，不能指向现有用户数据库。Python 需 `python-docx` / Pillow / NumPy；需安装 `rsvg-convert`、Playwright Chromium、LibreOffice、Poppler、FFmpeg/ffprobe。旁白脚本使用 macOS `say` 的婷婷中文语音，不调用在线语音服务。
 
 ```sh
 npm ci
@@ -47,18 +47,23 @@ node apps/api/dist/server.js
 
 ```sh
 DELIVERY_ISOLATED=true node scripts/capture_report.cjs
-# 如默认 python3 不含 Pillow，设置 DELIVERY_PYTHON 为可用 Python 的绝对路径。
-node scripts/render_delivery_video.cjs
+# 如默认 python3 不含 NumPy，设置 DELIVERY_PYTHON 为可用 Python 的绝对路径。
+node scripts/import_delivery_capture.cjs
+node scripts/prepare_delivery_audio.cjs
+npm ci --prefix video
+npm run typecheck --prefix video
+node scripts/verify_delivery_video.cjs
+npm run render --prefix video
 python3 scripts/build_report.py
 soffice -env:UserInstallation=file:///tmp/neighborhood-final-render --headless \
   --convert-to pdf --outdir docs/delivery docs/delivery/邻里闲置_项目设计说明书.docx
 ```
 
-录制脚本只允许 3130 且需显式 `DELIVERY_ISOLATED=true`，阻止 AI 路由；它记录双身份操作与每段原视频，输出当前截图 manifest。两个既有真实 AI 截图已在仓库，重录不会覆盖或再次请求。成片包含 9 段真实操作和 3 段明确标注的说明，每段 25 秒；制作入口会自动加入宽屏动效、原创配乐和旁白侧链混音；原视频、旁白中间文件和备份留在工作目录，不提交过时正文或数据库。
+录制脚本只允许 3130 且需显式 `DELIVERY_ISOLATED=true`，阻止 AI 路由；它记录双身份操作与每段原视频，输出当前截图 manifest。两个既有真实 AI 截图已在仓库，重录不会覆盖或再次请求。成片包含 9 段真实操作和 3 段明确标注的说明，每段 25 秒；原始动态素材随独立 [Remotion 工程](../../video/README.md) 保存，克隆仓库后可直接重渲染，不必再次操作数据库。九段网页视频完整播放，按实测时长调整轻微播放速率，不使用静帧延长或循环。原始录像保留自然输入、点击与网页响应；只有少量明确标注的证据/架构讲解页使用图片。
 
 图纸与 v2 迁移已经核对，无实体或字段变化，因此沿用经过验收的 10 对 SVG/PNG。需要重新导出时执行 `python3 scripts/render_erd.py`，再核验图内标签、完整结构、中文与主键下划线。
 
-中文 PDF 需宋体/苹方或相应替代字体。当前机器通过 `FONTCONFIG_FILE=/tmp/neighborhood-fonts.conf` 转换；其他环境应自行配置有效字体，不假设该临时文件存在。视频字幕图层由 Pillow 读取系统黑体，说明页由 Chromium 使用本地苹方。
+中文 PDF 需宋体/苹方或相应替代字体。当前机器通过 `FONTCONFIG_FILE=/tmp/neighborhood-fonts.conf` 转换；其他环境应自行配置有效字体，不假设该临时文件存在。视频标题、字幕和讲解页全部由 Remotion React 组件渲染，使用苹方或系统中文替代字体。
 
 ## 本轮实际验证
 

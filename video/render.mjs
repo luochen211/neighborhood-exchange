@@ -1,0 +1,14 @@
+import {bundle} from '@remotion/bundler';
+import {selectComposition,renderMedia,renderStill} from '@remotion/renderer';
+import path from 'node:path';
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
+const dir=path.dirname(fileURLToPath(import.meta.url));
+const serveUrl=await bundle({entryPoint:path.join(dir,'src/index.tsx'),publicDir:path.join(dir,'public')});
+const composition=await selectComposition({serveUrl,id:'NeighborhoodDemo'});
+const output=process.env.VIDEO_OUTPUT||path.resolve(dir,'../docs/delivery/邻里闲置_演示视频.mp4');
+const sample=process.argv.includes('--sample');
+fs.mkdirSync(path.dirname(output),{recursive:true});
+await renderMedia({serveUrl,composition,codec:'h264',outputLocation:sample?path.join(dir,'sample.mp4'):output,frameRange:sample?[0,449]:undefined,concurrency:4,crf:20,audioBitrate:'192k',onProgress:({progress})=>{const p=Math.floor(progress*100);if(p%10===0&&p!==globalThis.lastProgress){console.log(`Render ${p}%`);globalThis.lastProgress=p;}}});
+if(sample)for(const frame of [120,330])await renderStill({serveUrl,composition,frame,output:path.join(dir,`sample-${frame}.png`)});
+console.log('Rendered',sample?'sample.mp4':output);

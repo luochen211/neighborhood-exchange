@@ -1,0 +1,16 @@
+{
+  "duration": 300.053333,
+  "videoFrames": 9000,
+  "bytes": 36298471,
+  "width": 1920,
+  "height": 1080,
+  "fps": "30/1",
+  "audioCodec": "aac",
+  "sampleRate": "48000",
+  "channels": 2,
+  "integratedLufs": -15.9,
+  "truePeakDbtp": -1.44,
+  "loudnessRangeLu": 7.0,
+  "fullDecode": "passed",
+  "manualListening": false
+}
