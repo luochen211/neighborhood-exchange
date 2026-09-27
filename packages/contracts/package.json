@@ -6,12 +6,17 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc",
-    "dev": "tsc --watch --preserveWatchOutput"
+    "dev": "tsc --watch --preserveWatchOutput",
+    "generate:openapi": "tsx scripts/generate-openapi.ts"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./mock": {
+      "types": "./dist/mock.d.ts",
+      "default": "./dist/mock.js"
     }
   },
   "dependencies": {

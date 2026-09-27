@@ -104,6 +104,19 @@ HTTP 错误：400 输入错误，401 未登录，403 权限不足，404 不存�
 
 关键词同时匹配标题和描述，中文子串可搜索，拉丁字母不区分大小写；`%`、`_` 按普通字符处理；查询参数绑定并转义 LIKE 通配符。搜索与 scope、tradeMode 采用 AND 组合。
 
+### 4.1 共享契约固定值与 DTO（Issue #3）
+
+共享实现位于 `packages/contracts`，OpenAPI 3.1 位于 [openapi.yaml](openapi.yaml)，由同一份 schema/端点定义生成。金额、状态、未知字段、输出隐私和 AI 结构使用导出的严格 Zod schema 校验；OpenAPI 的结构校验不能替代跨字段关系、权限、事务和服务器时钟校验。
+
+- Cookie 名固定为 `neighborhood_session`，Path=/，HttpOnly、SameSite=Lax，24 小时有效；HTTPS 加 Secure，登出用相同 Path 清除。token 不进入 JSON DTO。
+- 图片 key 白名单固定为 `chair`、`lamp`、`cooker`、`books`。前端提供对应本地预置图，接口不接受路径或 URL。
+- 健康响应 data 为 `{status:"ok",database:"ok"}`；数据库不可用返回 503。`/demo/users` 同样返回列表信封，`page.nextCursor=null`。
+- 用户摘要为 `{id,nickname,building}`。留言 DTO 为 `{id,itemId,author,body,createdAt}`，author 为用户摘要。物主意向名单每项为 `{id,nickname,building,createdAt}`，id 是意向用户 ID、createdAt 是意向建立时间；排序使用底层意向 created_at/id。我的意向每项为 `{id,item,createdAt}`，id 为意向 ID，item 为物品 DTO；仅有效意向，包含已归档物品，按意向 created_at/id 倒序。
+- 交易 DTO 为 `{id,itemId,owner,recipient,status,meetingStart,meetingEnd,meetingPlace,createdAt,confirmedAt,completedAt,cancelledAt,cancelledBy}`。owner/recipient 为用户摘要；四个可空字段为 confirmedAt/completedAt/cancelledAt/cancelledBy，后者为取消方用户 ID。创建、详情、确认、取消、完成均返回完整交易 DTO；完成响应里的 itemId 指向归档物品。字段状态约束遵循 SRS-DATA-02，详情仅双方可见。
+- 通用错误 code 固定为 `BAD_REQUEST`(400)、`UNAUTHORIZED`(401)、`FORBIDDEN`(403)、`NOT_FOUND`(404)、`CONFLICT`(409)、`PAYLOAD_TOO_LARGE`(413)、`RATE_LIMITED`(429)、`INTERNAL_ERROR`(500)、`SERVICE_UNAVAILABLE`(503)。领域错误为 `AI_INVALID_RESPONSE`(502)、`AI_NOT_CONFIGURED`/`AI_UNAVAILABLE`/`DATABASE_BUSY`(503)、`AI_TIMEOUT`(504)。fieldErrors 如有则为字段名到字符串数组的映射。503 健康检查使用 SERVICE_UNAVAILABLE；DEMO_MODE 关闭时身份列表和登录返回 FORBIDDEN。
+- client 使用 `createClient().call(operation,{path,query,body},{signal})`，返回完整信封，自动携带同源 Cookie、校验请求和响应、无自动重试。分页 limit 在 client 中为数值；HTTP 层仅将合法整数字符串转为数值，非法值返回 400。
+- 开发 mock 仅从 `@neighborhood/contracts/mock` 显式导入并以 `enabled:true` 构造。它提供静态契约样例及可覆盖的错误/空态，不模拟真实业务和持久化、不作为网络失败降级、不得接入生产。各下游任务遵循这些共享定义，不复制协议。
+
 ## 5. 状态机、事务与幂等
 
 | 操作 | 前提 | 事务内结果 |
