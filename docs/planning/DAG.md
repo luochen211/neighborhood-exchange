@@ -74,3 +74,25 @@ flowchart LR
 前端独立交互验收与后端 API 验收分别记录；两端完成后，#11 用真实 HTTP、真实数据库与真实模型验证全链路。失败、跳过与外部阻塞分开记录。#12 交付带实际截图的 Word、6 张实体属性图、3 张局部图、1 张全局图，以及实际约 5 分钟视频。
 
 协调任务持续推进，10 分钟 heartbeat 仅作为意外停止恢复保障；正常执行保持安静。只在完成、无法自动修复的失败或用户专属外部条件时通知。最终核验 main、CI、必需 Issue、真实运行与全部材料后关闭 Epic；可选部署不影响本地交付。
+
+## 当前状态快照
+
+读取时刻：`2026-09-27T02:22:47.885956+00:00`。历史 not_planned 任务不计入以下完成数。
+
+Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 2 | Stale_Claim: 0 | Ready: 0 | Conflict: 0 | Blocked: 3 | Done: 2
+
+### Claimed
+
+- #4 实现完整后端 API、数据库与 LLM 服务 — unlocks #11; claim active by complete backend
+- #9 实现完整 Web 前端与独立 API 适配层 — unlocks #11; claim active by complete web frontend
+
+### Blocked
+
+- #11 完成真实前后端联调与验收测试 — blocked by #4, #9; unlocks #12
+- #12 交付运行说明、ER 图、技术简介与演示视频 — blocked by #11; unlocks #13
+- #13 可选：部署受控演示站并验证持久化 — blocked by #12
+
+### Done
+
+- #3 建立共享 API 契约、类型与前端 Mock — unlocks #4, #9; PR merged; checks success
+- #2 初始化全栈工程、开发命令与 CI — unlocks #3; PR merged; checks success
