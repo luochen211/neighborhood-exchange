@@ -7,7 +7,10 @@
     "typecheck": "tsc --noEmit",
     "dev": "node --env-file-if-exists=../../.env --import tsx --watch src/server.ts --dev",
     "build": "tsc -p tsconfig.build.json",
-    "start": "node --env-file-if-exists=../../.env dist/server.js"
+    "start": "node --env-file-if-exists=../../.env dist/server.js",
+    "db:migrate": "node --env-file-if-exists=../../.env --import tsx src/db/cli.ts migrate",
+    "db:seed": "node --env-file-if-exists=../../.env --import tsx src/db/cli.ts seed",
+    "test": "vitest run --root ../.. apps/api/src"
   },
   "dependencies": {
     "@fastify/cookie": "11.1.2",
