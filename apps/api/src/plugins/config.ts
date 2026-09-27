@@ -14,6 +14,12 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env) {
   if (env.DEMO_MODE && !["true", "false"].includes(env.DEMO_MODE))
     throw new Error("DEMO_MODE must be true or false");
   const llmBaseUrl = env.LLM_BASE_URL ?? "";
+  const demoAccessUser = env.DEMO_ACCESS_USER ?? "";
+  const demoAccessPassword = env.DEMO_ACCESS_PASSWORD ?? "";
+  if (Boolean(demoAccessUser) !== Boolean(demoAccessPassword))
+    throw new Error("Both demo access credentials must be configured");
+  if (demoAccessUser.includes(":"))
+    throw new Error("Demo access username cannot contain a colon");
   if (llmBaseUrl && !["https:", "http:"].includes(new URL(llmBaseUrl).protocol))
     throw new Error("LLM_BASE_URL must be HTTP(S)");
   return {
@@ -21,6 +27,8 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env) {
     port,
     appOrigin,
     demoMode: env.DEMO_MODE === "true",
+    demoAccessUser,
+    demoAccessPassword,
     databaseUrl:
       env.DATABASE_URL === ":memory:"
         ? ":memory:"
