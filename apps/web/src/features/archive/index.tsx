@@ -1,3 +1,4 @@
-import { PendingFeature } from '../../components/ui';
-
-export function ArchivePage() { return <PendingFeature title="历史记录" />; }
+import { BrowsePage } from "../discovery";
+export function ArchivePage() {
+  return <BrowsePage archive />;
+}
