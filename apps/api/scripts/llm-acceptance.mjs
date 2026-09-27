@@ -39,10 +39,15 @@ async function main() {
     if (!login.ok) throw new Error("LOCAL_LOGIN_FAILED");
     const cookie = login.headers.get("set-cookie")?.split(";")[0];
     if (!cookie) throw new Error("LOCAL_LOGIN_FAILED");
-    for (const sample of [
+    const pricingReview = process.argv[3] === "--pricing";
+    const samples = pricingReview ? [
+      { title: "搬家转让电磁炉", description: "虚构验收物品：使用两年，功能正常，表面有划痕，希望标价转让，品牌和型号待补充。" },
+      { title: "转让家用电磁炉", description: "虚构验收物品：美的C21-WT2118电磁炉，购入价399元，使用两年，功能正常，面板有轻微划痕，配原装电源线，无锅具，希望标价转让。" },
+    ] : [
       { title: "搬家转让电磁炉", description: "虚构验收物品：使用两年，功能正常，表面有划痕，希望标价转让，品牌和型号待补充。" },
       { title: "免费送木椅", description: "虚构验收物品：一把木椅，椅面有划痕，免费送，在小区公共活动室自取。" },
-    ]) {
+    ];
+    for (const [index, sample] of samples.entries()) {
       const timestamp = new Date().toISOString();
       const start = performance.now();
       const r = await fetch(`${base}/api/v1/ai/listing-assistance`, {
@@ -51,14 +56,23 @@ async function main() {
       const payload = await r.json();
       const result = endpoints.assistListing.output.safeParse(payload);
       const success = r.status === 200 && result.success;
+      const suggestion = success ? result.data.data : undefined;
+      const range = suggestion?.suggestedPriceRangeCents;
+      // Sample-specific sanity bounds are not market-price verification.
+      // Sparse input must admit missing evidence, not invent a numeric price.
+      const quality = !pricingReview || !suggestion ? undefined : index === 0
+        ? suggestion.suggestedTradeMode === "FLEXIBLE" && range === null && suggestion.missingInfo.length > 0
+        : suggestion.suggestedTradeMode === "FIXED" && range !== null && range.min > 0 && range.max <= 39900 && range.max / range.min <= 4;
+
       const errors = ["AI_NOT_CONFIGURED", "AI_UNAVAILABLE", "AI_INVALID_RESPONSE", "AI_TIMEOUT", "RATE_LIMITED"];
       console.log(JSON.stringify({
         realLlm: success ? "passed" : "failed", provider: "DeepSeek", model: config.llmModel, timestamp,
+        ...(pricingReview ? { pricingSanity: quality === true ? "passed" : "failed", criterion: index === 0 ? "insufficient evidence requests clarification without price" : "positive bounded estimate within supplied purchase price; ratio <=4" } : {}),
         inputSummary: sample.title, durationMs: Math.round(performance.now() - start), status: r.status,
         ...(success ? { outputSummary: { schemaValid: true, titleLength: result.data.data.title.length, descriptionLength: result.data.data.description.length, tradeMode: result.data.data.suggestedTradeMode, priceRangeCents: result.data.data.suggestedPriceRangeCents, missingInfoCount: result.data.data.missingInfo.length } } : { error: errors.includes(payload.error?.code) ? payload.error.code : "ACCEPTANCE_FAILED" }),
         persistedItems: db.sqlite.prepare("SELECT count(*) n FROM items").get().n,
       }));
-      if (!success) { process.exitCode = 1; break; }
+      if (!success || quality === false) { process.exitCode = 1; break; }
     }
   } finally {
     await app.close();
