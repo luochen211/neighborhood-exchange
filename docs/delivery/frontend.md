@@ -67,3 +67,7 @@ node apps/web/tests/browser-smoke.mjs
 ## 验收限制
 
 前端 Mock 与 HTTP 适配验收不证明真实数据库、真实双浏览器会话、真实模型或线上部署成功；这些由 #11 联调验收。当前仓库配置了 push/PR CI，未配置部署。新的 AI 商品素材尚由协调者处理，不阻塞当前契约四类图片验收。
+
+## 商品图片集成
+
+30 张 AI 生成图片原件位于 `assets/demo-items`；网页使用 `apps/web/public/demo-items` 的 800×800 WebP 衍生文件（合计 1,305,606 bytes）。共享契约 `ITEM_IMAGES` 定义名称和文件映射，`IMAGE_KEYS` 与 SQLite v2 白名单一致。发布选择区支持滚动，图片懒加载，图片角标及说明标明 AI 生成演示图片。种子数据以固定 ID 增补其余 26 件虚构物品，不覆盖已有记录；v1 升级保留物品、意向、留言及交易关系。

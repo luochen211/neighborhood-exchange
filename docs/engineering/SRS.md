@@ -70,7 +70,7 @@ SRS-DATA-04：种子包含 3 位用户、3 种交易方式、3 个新鲜度区�
 
 SRS-API-01：前缀 `/api/v1`。正常响应 `{data: ...}`；列表 `{data: [...], page:{nextCursor: string|null}}`；失败 `{error:{code,message,fieldErrors?,requestId}}`。分页默认 20、最大 50，cursor 不透明；排序固定 `created_at DESC, id DESC`（留言为 ASC/ASC）。非法参数返回 400，不默默修正。
 
-SRS-API-02：标题 trim 后 1–60，描述 1–2000，楼栋 1–30，留言 1–500，交接地点 1–100。imageKey 只允许预置白名单，不允许外部 URL。FREE 价格 0；FLEXIBLE 价格 null；FIXED 价格为 1–9,999,900 整数分。请求拒绝未知属性，禁止批量赋值越权。字符串作为纯文本显示。
+SRS-API-02：标题 trim 后 1–60，描述 1–2000，楼栋 1–30，留言 1–500，交接地点 1–100。imageKey 只允许共享契约定义的 30 项预置白名单，不允许外部 URL。FREE 价格 0；FLEXIBLE 价格 null；FIXED 价格为 1–9,999,900 整数分。请求拒绝未知属性，禁止批量赋值越权。字符串作为纯文本显示。
 
 SRS-API-03：物品 DTO 包含 id、owner 的 id/nickname/building、title、description、tradeMode、priceCents、imageKey、pickupBuilding、status、createdAt、givenAt、interestCount、viewerHasInterest、freshnessLabel、serverNow。列表与详情不泄露 session、token 或预约地点。预约 DTO 只通过交易接口提供给双方。
 

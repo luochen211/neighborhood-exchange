@@ -1,3 +1,4 @@
+import { IMAGE_KEYS } from "@neighborhood/contracts";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 export const users = sqliteTable("users", {
   id: text().primaryKey(),
@@ -22,7 +23,7 @@ export const items = sqliteTable("items", {
   }).notNull(),
   priceCents: integer("price_cents"),
   imageKey: text("image_key", {
-    enum: ["chair", "lamp", "cooker", "books"],
+    enum: IMAGE_KEYS,
   }).notNull(),
   pickupBuilding: text("pickup_building").notNull(),
   status: text({ enum: ["AVAILABLE", "RESERVED", "GIVEN"] }).notNull(),
