@@ -27,4 +27,17 @@
 
 ## 当前状态
 
-已初始化仓库；技术栈尚未确定，应用功能尚未实现。
+已完成 PRD、SRS、数据库逻辑设计与开发 DAG；应用功能尚未实现。
+
+技术方案：React + TypeScript + Vite 前端，Node.js + Fastify API，SQLite + Drizzle 数据库，服务端 LLM 发布辅助。依赖版本在工程初始化任务中锁定。
+
+## 项目文档
+
+- [PRD：产品范围、用户流程与验收](docs/product/PRD.md)
+- [SRS：架构、接口、权限、状态与测试](docs/engineering/SRS.md)
+- [数据库 ER 图](docs/engineering/ERD.md)
+- [开发 DAG 与执行规则](docs/planning/DAG.md)
+- [任务清单](docs/planning/tasks.json)
+- [GitHub 交付 Epic](https://github.com/luochen211/neighborhood-exchange/issues/1)
+
+功能实现前请先按 DAG 认领 Ready 任务。当前尚无可运行应用、CI 或部署；不能将需求文档中的目标当作已通过验收。

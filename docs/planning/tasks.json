@@ -1,0 +1,249 @@
+{
+  "repository": "luochen211/neighborhood-exchange",
+  "epic": 1,
+  "source_of_truth": "GitHub native parent and blocked-by metadata; this file is the initial task plan",
+  "tasks": [
+    {
+      "key": "T01",
+      "title": "初始化全栈工程、开发命令与 CI",
+      "depends_on": [],
+      "estimate_hours": 2,
+      "scope": "根 workspace、lockfile、apps/web/src/app、apps/web/src/components/ui、apps/api/src/app.ts、plugins、CI；预建 feature/module 路由入口供后续按目录实现。",
+      "acceptance": [
+        "Node 24、npm workspace、React/Vite、Fastify 和全部已选依赖锁定；不引入真实业务实现",
+        "dev/build/start/lint/typecheck/test 命令可运行；数据库命令及 E2E 命令在后续对应任务补全",
+        "前后端同源代理、API 错误边界、应用路由壳、基础样式与 UI 原语就绪；后续模块能按既定入口接入",
+        "GitHub Actions 对 push/PR 运行基础检查并成功；提供无密钥 .env.example"
+      ],
+      "requirements": "SRS 第 1/2/8 节；PRD-10",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 2,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/2"
+    },
+    {
+      "key": "T02",
+      "title": "建立共享 API 契约、类型与前端 Mock",
+      "depends_on": [
+        "T01"
+      ],
+      "estimate_hours": 1.5,
+      "scope": "packages/contracts、docs/engineering/openapi.yaml；共享 API client 与 mock fixtures 均在 contracts 内。",
+      "acceptance": [
+        "SRS 全部端点的请求、响应、错误及 cookie 认证写入 OpenAPI 3.1",
+        "共享 schema 覆盖金额、状态、DTO、分页和 AI 输出；前后端不各自复制定义",
+        "提供可被前端调用的类型化 client 与显式开发 mock；不将 mock 接入生产运行",
+        "校验契约和样例一致；契约变更先同步 SRS 并通知受影响任务"
+      ],
+      "requirements": "SRS-API-01~03、SRS-AI-02；PRD-01~09",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 3,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/3"
+    },
+    {
+      "key": "T03",
+      "title": "实现数据库迁移、种子与演示会话",
+      "depends_on": [
+        "T02"
+      ],
+      "estimate_hours": 2,
+      "scope": "apps/api/src/db、auth、认证与数据相关 tests；根数据库命令。",
+      "acceptance": [
+        "六张表、外键、价格 CHECK、交易状态约束和未取消交易部分唯一索引迁移成功",
+        "种子幂等、虚构数据覆盖三种方式和全部物品状态；临时数据库与开发库隔离",
+        "演示登录、登出、session 哈希持久化与过期、demo mode、同源校验可用",
+        "数据库连接/事务与认证服务导出稳定接口；未登录、失效会话、重启持久化测试通过"
+      ],
+      "requirements": "PRD-01；SRS-DATA-01~04、AUTH-01~03；AT-01/02",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 4,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/4"
+    },
+    {
+      "key": "T04",
+      "title": "实现物品发布、检索与公开留言 API",
+      "depends_on": [
+        "T03"
+      ],
+      "estimate_hours": 2,
+      "scope": "apps/api/src/modules/items、comments 及各自测试；不改 schema、contracts 或全局入口。",
+      "acceptance": [
+        "实现发布/列表/详情/我的发布/留言 API；金额、字段、图片白名单由服务端校验",
+        "搜索+筛选+游标、归档只读、新鲜度精确边界与稳定排序通过测试",
+        "留言纯文本、归档拒绝写入，事务重读状态，权限与错误码符合契约",
+        "所有数据真实持久化，不使用硬编码列表"
+      ],
+      "requirements": "PRD-02/03/06/08；AT-02/03/09",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 5,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/5"
+    },
+    {
+      "key": "T05",
+      "title": "实现意向、预约确认与交接事务 API",
+      "depends_on": [
+        "T03"
+      ],
+      "estimate_hours": 2.5,
+      "scope": "apps/api/src/modules/interests、trades 及各自测试；使用数据库层接口，不依赖物品 HTTP 路由。",
+      "acceptance": [
+        "想要/撤回/名单/我的意向、创建预约/我的交易/交易详情/确认/取消/完成符合契约",
+        "校验角色、有效意向和时间；预约细节只对双方可见",
+        "并发竞争一笔成功；取消后再预约；旧取消重试不影响新交易；重复完成不重复计数",
+        "测试拒绝越权、非法转换、归档写入与事务部分失败"
+      ],
+      "requirements": "PRD-04/05/06；AT-04/05/06/07",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 6,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/6"
+    },
+    {
+      "key": "T06",
+      "title": "实现社区看板统计 API",
+      "depends_on": [
+        "T03"
+      ],
+      "estimate_hours": 1,
+      "scope": "apps/api/src/modules/dashboard 与测试；用独立 fixture 构建交易数据。",
+      "acceptance": [
+        "实现本月发布、本月成交、在售、最快领走、最想要五项真实查询",
+        "北京时间月边界、有效意向去重、取消排除、并列规则和空数据测试通过",
+        "统计同一读快照，记录 asOf；不存在硬编码业务计数"
+      ],
+      "requirements": "PRD-09；SRS-STATS-01~03；AT-10",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 7,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/7"
+    },
+    {
+      "key": "T07",
+      "title": "实现 LLM 发布辅助服务与失败降级",
+      "depends_on": [
+        "T03"
+      ],
+      "estimate_hours": 1.5,
+      "scope": "apps/api/src/modules/ai 与测试；仅服务端读取模型配置。",
+      "acceptance": [
+        "选定并记录一个真实服务商协议，实现适配器、提示词与结构校验",
+        "实现 15 秒超时、无自动重试、用户/IP 限流及安全错误映射",
+        "stub 测试覆盖成功、缺配置、429、超时和非法输出；没有假成功降级",
+        "模型无工具或写库权限、无前端密钥，事实约束和固定参考价提示齐备；真实凭据验收由集成任务完成"
+      ],
+      "requirements": "PRD-07；SRS-AI-01~05；AT-08",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 8,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/8"
+    },
+    {
+      "key": "T08",
+      "title": "实现发现、详情、归档与看板页面",
+      "depends_on": [
+        "T02"
+      ],
+      "estimate_hours": 2,
+      "scope": "apps/web/src/features/discovery、detail、archive、dashboard 及局部样式/测试；详情使用既定交互组件插槽。",
+      "acceptance": [
+        "按共享契约 mock 完成卡片、筛选搜索、详情、留言显示/提交、归档和看板",
+        "390px/1440px 无溢出，统一基础 UI；加载/空/失败/归档只读状态齐备",
+        "页面通过共享 client 调用接口；详情中的意向和预约动作留稳定组件插槽交给 T09",
+        "前端契约测试通过；真实后端联调在 T10 完成"
+      ],
+      "requirements": "PRD-03/06/08/09；AT-03/09/10/11",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 9,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/9"
+    },
+    {
+      "key": "T09",
+      "title": "实现身份、发布与交接操作界面",
+      "depends_on": [
+        "T02"
+      ],
+      "estimate_hours": 2.5,
+      "scope": "apps/web/src/features/auth、publish、me、exchange 及局部测试；导出给详情使用的 IntentActions/OwnerActions 组件。",
+      "acceptance": [
+        "演示身份切换、手动发布、AI 预览及分别采用、草稿保护/切换身份清理",
+        "我发布/我想要/待交接，想要撤回、选人预约、领取人确认拒绝、取消与送出二次确认完整",
+        "通过契约 mock 验证权限展示、重复提交禁用、失败保留输入与缓存失效",
+        "不复制浏览卡片或修改 T08 目录；应用入口使用 T01 约定导出，接线留 T10"
+      ],
+      "requirements": "PRD-01/02/04/05/07；AT-01/04~08/11",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 10,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/10"
+    },
+    {
+      "key": "T10",
+      "title": "完成真实前后端联调与验收测试",
+      "depends_on": [
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09"
+      ],
+      "estimate_hours": 2,
+      "scope": "tests/e2e、应用组合入口、CI E2E job、docs/delivery/acceptance.md；缺陷修复限定于验收发现的问题。",
+      "acceptance": [
+        "移除生产 mock，完成全部应用与 API 接线，双会话端到端主流程和取消恢复通过",
+        "AT-01~11 对应记录结果；并发/越权/持久化/API 性能与双尺寸检查完成",
+        "真实 LLM 调用留脱敏 provider/model/时间/结果证据；无凭据则标记外部阻塞，不关闭任务",
+        "lint/typecheck/unit/API/E2E/build 与 CI 通过；实际失败、跳过及环境阻塞分开记录"
+      ],
+      "requirements": "PRD-01~09；AT-01~11",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 11,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/11"
+    },
+    {
+      "key": "T11",
+      "title": "交付运行说明、ER 图、技术简介与演示视频",
+      "depends_on": [
+        "T10"
+      ],
+      "estimate_hours": 1.5,
+      "scope": "README、docs/delivery、ERD 导出和视频文件或链接。",
+      "acceptance": [
+        "干净环境按 README 完成安装、迁移、种子和启动；全部必需用例有证据",
+        "ER 图与实际迁移一致并有可查看导出，技术简介说明前后端/数据库/LLM 结构",
+        "交付约 5 分钟 Demo + 讲解视频；记录 AI Coding 工具使用、关键迭代与人工验证",
+        "材料链接可打开，无密钥；核验 default branch/CI/Issue 验收一致后才关闭本任务和 Epic"
+      ],
+      "requirements": "PRD-10；AT-12",
+      "optional": false,
+      "conflicts_with": [],
+      "number": 12,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/12"
+    },
+    {
+      "key": "T12",
+      "title": "可选：部署受控演示站并验证持久化",
+      "depends_on": [
+        "T11"
+      ],
+      "estimate_hours": 2,
+      "scope": "部署配置、运行环境与 docs/delivery/deployment.md；独立加分项，不属于必需 Epic。",
+      "acceptance": [
+        "执行前确认可用托管资源；只用虚构数据、限制外部访问与 LLM 配额",
+        "采用支持持久化 SQLite 的单实例托管，不能将数据库放在易失文件系统",
+        "部署终态成功；线上页面/API、双身份、真实模型和重启数据保存均有验证",
+        "遇用户专属资源/密钥/域名门槛记录阻塞；未部署不得写成已上线"
+      ],
+      "requirements": "PRD 可选部署；SRS 第 10 节",
+      "optional": true,
+      "conflicts_with": [],
+      "number": 13,
+      "url": "https://github.com/luochen211/neighborhood-exchange/issues/13"
+    }
+  ]
+}
