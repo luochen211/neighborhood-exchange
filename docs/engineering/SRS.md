@@ -183,7 +183,7 @@ SRS-AI-05：不在日志中记录密钥、完整提示词或完整物品描述�
 | SRS-NFR-05 | 业务写入请求单用户每分钟最多 60 次，JSON body 最大 32KB | 429/413 测试；AI 另有更低限额 |
 | SRS-NFR-06 | 请求错误包含 requestId，健康检查检测数据库连接 | API 测试，不暴露内部细节 |
 
-预期根命令由工程初始化任务实现：`npm ci`、`npm run db:migrate`、`npm run db:seed`、`npm run dev`、`npm run lint`、`npm run typecheck`、`npm test`、`npm run test:e2e`、`npm run build`、`npm start`。本阶段这些命令尚不存在。构建后的 start 必须支持 SPA 页面直达和 `/api/v1`，不把 API 404 回退成 HTML。
+预期根命令由工程初始化任务实现：`npm ci`、`npm run db:migrate`、`npm run db:seed`、`npm run dev`、`npm run lint`、`npm run typecheck`、`npm test`、`npm run test:e2e`、`npm run build`、`npm start`。工程基础命令已由 #2 建立；迁移/种子命令由 #4 提供，根入口由协调者接入，E2E 命令由 #11 完成。构建后的 start 必须支持 SPA 页面直达和 `/api/v1`，不把 API 404 回退成 HTML。
 
 CI 在工程初始化时配置，对 push/PR 执行 lint/typecheck/unit/build；E2E 在整体验收任务加入。CI 不依赖真实模型密钥。数据库文件、环境文件、测试报告中的敏感信息不提交。
 
@@ -211,3 +211,14 @@ CI 在工程初始化时配置，对 push/PR 执行 lint/typecheck/unit/build；
 最终提供：运行 README、`.env.example`、迁移与种子、Chen E-R 图（6 张实体属性图、3 张局部实体联系图、1 张全局实体联系图，每张独立提供 SVG 源与 PNG 导出）、技术栈简介、AI Coding 工作记录、验收报告、5 分钟视频文件或可访问链接。录像不得展示真实密钥。
 
 验收报告分别列：通过、实际失败、跳过、外部阻塞。缺真实 LLM 凭据时标记 AT-08 的真实调用部分阻塞，不能关闭完整交付任务；未远端部署不影响本地必需范围通过。可选部署若启动，则必须核验 CI、部署终态、线上页面/API、数据库持久化及身份隔离。
+
+
+## 11. 前后端独立开发与接口适配
+
+SRS-DEV-01：完整前端由 #9 单一会话拥有，完整后端由 #4 单一会话拥有；两者只依赖 #3 共享契约，不互为前置。前端拥有全部 apps/web（包括路由和全局 UI），后端拥有全部 apps/api（包括迁移和路由注册）；各自完成内部接线。
+
+SRS-DEV-02：前端页面经统一类型化 adapter 调用业务接口。HTTP adapter 使用共享 client；开发 Mock adapter 使用同样的契约，并通过有状态 handlers 支持独立交互演示。Mock 必须显式开启并标注，生产默认 HTTP，不允许 API 失败时自动退回 Mock；切换真实后端无需逐页改写。
+
+SRS-DEV-03：后端用独立临时数据库、会话 Cookie 和契约校验执行 API 验收，可脱离前端运行。前端 Mock 通过不证明后端完成，后端 API 测试通过也不代替 #11 的真实浏览器全链路验收。
+
+SRS-DEV-04：共享协议、OpenAPI、根 lockfile/package.json/CI 由协调者串行修改。协议有缺口时统一确认、修正并通知两端，不允许分别定义不一致字段。具体修改范围和交接规则见 docs/planning/DAG.md。

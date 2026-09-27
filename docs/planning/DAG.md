@@ -1,163 +1,76 @@
-# 开发 DAG 与执行计划
+# 前后端独立开发 DAG
 
-本文件为 PRD/SRS v1.0 的交付计划和读取时刻的队列快照；任务调度以 GitHub 实时状态为准。完成状态以验收及 main/CI 证据为准。
+用户已确定以完整前端、完整后端为开发交付单元。一个会话拥有全部网页，另一个会话拥有全部 API 与数据库；两端按共享契约并行，分别自测，再做真实联调。
 
-## 入口检查
+## 入口与真源
 
-- Requirements: Pass — [PRD](../product/PRD.md) 明确目标、范围、流程和验收；[SRS](../engineering/SRS.md) 明确接口、数据、角色、集成、约束及 AT-01～12。
-- GitHub repository: Pass — `luochen211/neighborhood-exchange` 是专门创建的目标仓库，可读取 main、Issue 和 PR。
-- Decision: Proceed — execute 模式，按已授权的多会话依赖图执行、验收和合并。
-- [必需交付 Epic #1](https://github.com/luochen211/neighborhood-exchange/issues/1) 下有 11 个原生子任务；可选部署 #13 独立存在。
+- Requirements: Pass — PRD/SRS 覆盖业务、数据、接口和 AT-01～12；功能范围不变，开发所有权以本文件为准。
+- GitHub repository: Pass — `luochen211/neighborhood-exchange`，工程与契约已有对应 PR。
+- Decision: Proceed — 按新的前后端所有权执行。
+- [Epic #1](https://github.com/luochen211/neighborhood-exchange/issues/1) 聚合 6 个必需任务；#13 为可选部署。
+- 实时 Issue 状态、原生 parent/blocked-by、claim、PR 与 CI 是调度真源；本文件不将启动或 Mock 演示当作完成。
 
-## 依赖图
-
-箭头 A → B 表示 B 等待 A 完成，不表示 A 依赖 B。Epic 是聚合容器，不作为可执行节点参与排序。
+## 依赖关系
 
 ```mermaid
 flowchart LR
-  I2["#2 初始化全栈工程、开发命令与 CI [done]"]
-  I3["#3 建立共享 API 契约、类型与前端 Mock [ready]"]
-  I4["#4 实现数据库迁移、种子与演示会话 [blocked]"]
-  I5["#5 实现物品发布、检索与公开留言 API [blocked]"]
-  I6["#6 实现意向、预约确认与交接事务 API [blocked]"]
-  I7["#7 实现社区看板统计 API [blocked]"]
-  I8["#8 实现 LLM 发布辅助服务与失败降级 [blocked]"]
-  I9["#9 实现发现、详情、归档与看板页面 [blocked]"]
-  I10["#10 实现身份、发布与交接操作界面 [blocked]"]
-  I11["#11 完成真实前后端联调与验收测试 [blocked]"]
-  I12["#12 交付运行说明、ER 图、技术简介与演示视频 [blocked]"]
-  I13["#13 可选：部署受控演示站并验证持久化 [blocked]"]
-  I2 --> I3
-  I3 --> I4
-  I4 --> I5
-  I4 --> I6
-  I4 --> I7
-  I4 --> I8
-  I3 --> I9
-  I3 --> I10
-  I5 --> I11
-  I6 --> I11
-  I7 --> I11
-  I8 --> I11
-  I9 --> I11
-  I10 --> I11
-  I11 --> I12
-  I12 --> I13
-  style I2 fill:#dcfce7,stroke:#16a34a
-  style I3 fill:#dbeafe,stroke:#2563eb,stroke-width:2px
-  style I4 fill:#f3f4f6,stroke:#6b7280
-  style I5 fill:#f3f4f6,stroke:#6b7280
-  style I6 fill:#f3f4f6,stroke:#6b7280
-  style I7 fill:#f3f4f6,stroke:#6b7280
-  style I8 fill:#f3f4f6,stroke:#6b7280
-  style I9 fill:#f3f4f6,stroke:#6b7280
-  style I10 fill:#f3f4f6,stroke:#6b7280
-  style I11 fill:#f3f4f6,stroke:#6b7280
-  style I12 fill:#f3f4f6,stroke:#6b7280
-  style I13 fill:#f3f4f6,stroke:#6b7280
+  F["#2 工程初始化"] --> C["#3 API 契约"]
+  C --> W["#9 完整网页与 API adapter"]
+  C --> A["#4 完整后端与数据库"]
+  W --> I["#11 真实联调验收"]
+  A --> I
+  I --> D["#12 Word、ER 图与视频交付"]
+  D -.可选.-> P["#13 部署"]
 ```
 
-## 任务与工时预算
+箭头为前置到后续。#9 不依赖 #4，#4 不依赖 #9；两端各自完成内部路由、模块接线和测试，#11 不负责补齐任一端本应实现的页面或端点。
 
-| 编号 | GitHub Issue | 前置任务 | 估算 |
+## 当前交付单元
+
+| Issue | 交付 | 所有权 | 前置 |
 | --- | --- | --- | --- |
-| T01 | [#2](https://github.com/luochen211/neighborhood-exchange/issues/2) 初始化全栈工程、开发命令与 CI | 无 | 2h |
-| T02 | [#3](https://github.com/luochen211/neighborhood-exchange/issues/3) 建立共享 API 契约、类型与前端 Mock | #2 | 1.5h |
-| T03 | [#4](https://github.com/luochen211/neighborhood-exchange/issues/4) 实现数据库迁移、种子与演示会话 | #3 | 2h |
-| T04 | [#5](https://github.com/luochen211/neighborhood-exchange/issues/5) 实现物品发布、检索与公开留言 API | #4 | 2h |
-| T05 | [#6](https://github.com/luochen211/neighborhood-exchange/issues/6) 实现意向、预约确认与交接事务 API | #4 | 2.5h |
-| T06 | [#7](https://github.com/luochen211/neighborhood-exchange/issues/7) 实现社区看板统计 API | #4 | 1h |
-| T07 | [#8](https://github.com/luochen211/neighborhood-exchange/issues/8) 实现 LLM 发布辅助服务与失败降级 | #4 | 1.5h |
-| T08 | [#9](https://github.com/luochen211/neighborhood-exchange/issues/9) 实现发现、详情、归档与看板页面 | #3 | 2h |
-| T09 | [#10](https://github.com/luochen211/neighborhood-exchange/issues/10) 实现身份、发布与交接操作界面 | #3 | 2.5h |
-| T10 | [#11](https://github.com/luochen211/neighborhood-exchange/issues/11) 完成真实前后端联调与验收测试 | #5, #6, #7, #8, #9, #10 | 2h |
-| T11 | [#12](https://github.com/luochen211/neighborhood-exchange/issues/12) 交付运行说明、ER 图、技术简介与演示视频 | #11 | 1.5h |
-| T12 | [#13](https://github.com/luochen211/neighborhood-exchange/issues/13) 可选：部署受控演示站并验证持久化 | #12 | 2h |
+| #2 | 工程、基础命令与 CI | 已建立工作区与依赖基线 | 无 |
+| #3 | Schema、类型化 client、OpenAPI、显式 Mock 工具 | packages/contracts 与协议文档 | #2 |
+| #9 | 完整可操作网页与 API 适配层 | 全部 apps/web、前端局部测试、docs/delivery/frontend.md | #3 |
+| #4 | 全部后端 API、数据库、认证与 LLM | 全部 apps/api、迁移/种子/后端测试、docs/delivery/backend.md | #3 |
+| #11 | 真正的前后端集成验收 | E2E、集成配置、验收记录、CI E2E | #9、#4 |
+| #12 | 最终可交付材料 | 真实网页截图 Word、10 张 ER 图、技术说明、视频 | #11 |
+| #13 | 可选托管与线上验证 | 部署配置与部署证据 | #12 |
 
-必需任务合计约 20.5 人时，剩余 3.5 小时用于问题处理和录制重试。估算用于控制范围，不保证一定按时；多会话的等待和合并也会消耗时间。可选部署另估 2 小时，只在必需交付完成且有余量时开始。
+## 前端接口边界
 
-## 当前队列
+前端会话完整拥有首页、筛选搜索、详情、留言、发布、AI 建议采用、身份、我的列表、预约确认/取消/完成、归档与看板。可调整网页路由、全局视觉、基础组件与页面结构，无需跨前端会话交接插槽。
 
-读取时刻：`2026-09-27T02:11:49.679091+00:00`。
+页面只依赖一个类型化 API adapter。HTTP adapter 使用共享契约 client，统一处理 base URL、Cookie、状态码、超时/取消、加载和错误反馈。开发 Mock adapter 通过同一契约 handler 维护内存示例状态，让前端可以独立走通交互；显式开启且界面标注。生产默认 HTTP，不将失败静默回退为 Mock，不把 Mock 打包/启用为生产数据源。
 
-Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 0 | Stale_Claim: 0 | Ready: 1 | Conflict: 0 | Blocked: 10 | Done: 1
+前端应交付独立预览命令、双尺寸浏览器截图、关键交互验证与 API 接入说明。切换真实后端时只改 adapter 配置，不逐页替换 URL、字段或临时数据。
 
-### Ready
+## 后端接口边界
 
-- #3 建立共享 API 契约、类型与前端 Mock — unlocks #4, #9, #10
+后端会话完整拥有 session、数据 schema/迁移/种子、物品、留言、意向、预约/交易、看板、LLM、健康检查、路由注册与环境解析。各模块保持内部组织，但不再拆给独立执行会话。
 
-### Blocked
+后端直接按 OpenAPI 和共享 runtime schema 实现，使用 API 测试独立完成两身份交易与失败路径，不等待页面完成。提供数据库初始化、迁移、启动、自测命令与无密钥环境示例。真实模型凭据不足时报告真实调用尚未验收，先完成其余功能；#11 仍以真实调用作为必需门槛。
 
-- #4 实现数据库迁移、种子与演示会话 — blocked by #3; unlocks #5, #6, #7, #8
-- #5 实现物品发布、检索与公开留言 API — blocked by #4; unlocks #11
-- #6 实现意向、预约确认与交接事务 API — blocked by #4; unlocks #11
-- #7 实现社区看板统计 API — blocked by #4; unlocks #11
-- #8 实现 LLM 发布辅助服务与失败降级 — blocked by #4; unlocks #11
-- #9 实现发现、详情、归档与看板页面 — blocked by #3; unlocks #11
-- #10 实现身份、发布与交接操作界面 — blocked by #3; unlocks #11
-- #11 完成真实前后端联调与验收测试 — blocked by #5, #6, #7, #8, #9, #10; unlocks #12
-- #12 交付运行说明、ER 图、技术简介与演示视频 — blocked by #11; unlocks #13
-- #13 可选：部署受控演示站并验证持久化 — blocked by #12
+## 共享文件与协议变更
 
-### Done
+- 两个实现会话使用各自 clone/worktree 和分支，不在同一工作区修改。
+- apps/web 只由 #9 修改；apps/api 只由 #4 修改；各自允许修改本工作区 package 配置，但新增依赖须先协调。
+- packages/contracts、OpenAPI、SRS 的协议内容只读。发现缺口提交协调者，以一个串行契约补丁统一更改并通知两端；不得分别造 DTO 或私自修改端点。
+- 根 package.json、lockfile、CI、公共测试配置、根环境示例由协调者串行修改，两端提出具体需求。后端可先提供 workspace 级迁移命令，协调者再接入根命令。
+- 前端只配置公开的 API 地址/开发模式，不包含密钥；后端环境变量留在服务端。
 
-- #2 初始化全栈工程、开发命令与 CI — unlocks #3; PR merged; checks success
+上述边界消除正常开发的共享文件冲突。若实际需要改共享文件，先协调，不创建虚假的前后端业务依赖。
 
-验收证据：#2 由 PR #14 合并至 main `66a4186`，独立安装与完整检查通过，main CI 36287718963 成功。无远端部署。
+## 执行与交接
 
-## 修改边界与并行条件
+当前两个实现负责人分别是 #9 完整前端会话和 #4 完整后端会话。开始前 fresh 读取原生依赖、claim 和 PR；依赖验收关闭后发布 DAG-CLAIM 并复读，再开展实现。每个会话负责一个完整交付单元，可在同一 Issue 内按内部模块提交增量，不需要用户手动接力。
 
-| 任务组 | 拥有的边界 | 并行条件 |
-| --- | --- | --- |
-| #2 工程 | 根配置、依赖 lockfile、全局 UI、应用与模块入口 | 先行完成，预建后续模块接入约定 |
-| #3 契约 | packages/contracts、OpenAPI、client/mock | 完成后冻结；任何后续变更先协调受影响任务 |
-| #4 数据库与身份 | db、auth、迁移、种子 | 后端任务共同的先决条件；只此任务拥有初始迁移 |
-| #5/#6/#7/#8 后端模块 | items/comments、interests/trades、dashboard、ai 各自目录与测试 | 不互改目录；使用 db/auth/contracts 的稳定接口 |
-| #9/#10 前端 | discovery/detail/archive/dashboard 与 auth/publish/me/exchange 分开 | 公共 UI 已由 #2 提供；交互组件用插槽集成；局部样式，不改全局 |
-| #11 联调 | 应用接线、E2E、缺陷修复、CI E2E | 所有模块完成后统一接线，关闭生产 mock |
-| #12/#13 交付 | 文档视频；可选部署配置 | 顺序执行，不争用生产环境 |
+交接应包含 Issue、分支/提交、PR、启动命令、检查结果、接口假设、已知限制与下一步责任人。执行会话提交 PR 后释放实现认领并转 Review；协调会话审查、复跑必要检查、跟进 CI 后合并并验收关闭。任务暂停或失败时保留工作，记录剩余项；过期认领先检查原分支与 PR，再决定接管。
 
-初始没有需要持久记录的 conflicts_with 边，因为文件所有权已拆开。实际实现若出现共享文件、迁移、契约、lockfile、fixture 或部署环境竞争，必须暂停相关并行修改并记录冲突，不能通过虚构业务依赖掩盖冲突。
+依赖、认领、PR、Issue 或部署状态改变后重算队列。历史任务因范围被合并关闭为 not_planned 时，不视为功能验收通过，也不参与当前 Epic 完成统计。
 
-Ready 只是满足依赖，不等于自动授权启动并行会话。每个独立会话最多认领一个任务，各自使用分支和 worktree；本次已授权多会话执行，协调者按实时依赖依次唤醒执行会话。
+## 验收与持续监控
 
-## 实时调度与认领
+前端独立交互验收与后端 API 验收分别记录；两端完成后，#11 用真实 HTTP、真实数据库与真实模型验证全链路。失败、跳过与外部阻塞分开记录。#12 交付带实际截图的 Word、6 张实体属性图、3 张局部图、1 张全局图，以及实际约 5 分钟视频。
 
-真源顺序：GitHub 原生 Issue 状态及 parent/blocked-by → PR/检查 → main → 部署证据 → 本地计划。`tasks.json` 仅记录初始分解、文件范围、验收及 Issue 映射，不含实时 claim 或执行状态。
-
-执行前至少读取：
-
-```bash
-gh issue view <number> --repo luochen211/neighborhood-exchange --comments
-gh api repos/luochen211/neighborhood-exchange/issues/<number>/dependencies/blocked_by
-gh api repos/luochen211/neighborhood-exchange/issues/1/sub_issues
-gh pr list --repo luochen211/neighborhood-exchange --state all
-```
-
-检查关联 PR 与 checks；API 读取失败应记 Unknown，不按空列表处理。调度器归一化这些实时结果后验证节点、方向、环和声明冲突，再计算 Ready。关闭 Issue 代表调度 Done，但最终交付审计仍须检查验收证据与默认分支。
-
-认领评论格式：
-
-```text
-DAG-CLAIM
-executor: <会话名称>
-session: <会话标识>
-branch: codex/<task-name>
-worktree: <不含敏感信息的标识>
-claimed-at: <UTC ISO 时间>
-heartbeat-at: <UTC ISO 时间>
-expires-at: <UTC ISO 时间>
-scope: <当前 Issue 文件范围>
-```
-
-发表后复读，若已有更早有效认领则撤销自己的认领。按任务长度设置租期，在有意义的进度节点更新同一评论；过期先检查分支和 PR，再记录接管。提交 PR 时转 Review 并释放实现认领，停止时记录剩余工作与最后验证提交。Claim、Issue、依赖、PR 或部署状态变化后重新计算队列。
-
-原生关系的 API 约定可参考 [GitHub dependencies](https://docs.github.com/en/rest/issues/issue-dependencies) 和 [sub-issues](https://docs.github.com/en/rest/issues/sub-issues)。本仓库已实际写入并回读关系，不只是在正文中列出前置任务。
-
-## 完成与外部条件
-
-单任务完成必须满足其验收清单、相关检查通过、代码进入 main、已配置 CI/CD 到达成功终态。失败时记录首个可操作原因并在范围内修复。不能因推送成功、PR 已开或本地有代码而关闭。
-
-真实 LLM 凭据尚未在本阶段配置：不影响 #8 的适配器和 stub 测试，但 #11 的真实调用验收必须满足；缺凭据应记外部阻塞。ER 图按 Chen 表示法交付6 张实体属性图、3 张局部实体联系图、1 张全局实体联系图，每张独立提供 SVG 源图及 PNG 导出；#12 须核对实际数据库迁移。视频是 #12 的实际交付物，脚本不能代替视频。#13 的托管资源未选定，不计入必需交付。
-
-所有必需子任务验收和 main/CI/材料证据一致后，才核销父任务清单并关闭 Epic。CI 已由 #2 建立并通过；尚无远端部署，业务功能仍以实时子任务验收为准。
+协调任务持续推进，10 分钟 heartbeat 仅作为意外停止恢复保障；正常执行保持安静。只在完成、无法自动修复的失败或用户专属外部条件时通知。最终核验 main、CI、必需 Issue、真实运行与全部材料后关闭 Epic；可选部署不影响本地交付。
