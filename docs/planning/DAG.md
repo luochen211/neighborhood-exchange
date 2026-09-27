@@ -1,12 +1,12 @@
 # 开发 DAG 与执行计划
 
-本文件为 PRD/SRS v1.0 的初始交付计划和读取时刻的队列快照；任务调度以 GitHub 实时状态为准。创建 DAG 不代表已启动实现。
+本文件为 PRD/SRS v1.0 的交付计划和读取时刻的队列快照；任务调度以 GitHub 实时状态为准。完成状态以验收及 main/CI 证据为准。
 
 ## 入口检查
 
 - Requirements: Pass — [PRD](../product/PRD.md) 明确目标、范围、流程和验收；[SRS](../engineering/SRS.md) 明确接口、数据、角色、集成、约束及 AT-01～12。
 - GitHub repository: Pass — `luochen211/neighborhood-exchange` 是专门创建的目标仓库，可读取 main、Issue 和 PR。
-- Decision: Proceed — plan/setup 模式，建立工作图，不执行开发任务。
+- Decision: Proceed — execute 模式，按已授权的多会话依赖图执行、验收和合并。
 - [必需交付 Epic #1](https://github.com/luochen211/neighborhood-exchange/issues/1) 下有 11 个原生子任务；可选部署 #13 独立存在。
 
 ## 依赖图
@@ -15,8 +15,8 @@
 
 ```mermaid
 flowchart LR
-  I2["#2 初始化全栈工程、开发命令与 CI [ready]"]
-  I3["#3 建立共享 API 契约、类型与前端 Mock [blocked]"]
+  I2["#2 初始化全栈工程、开发命令与 CI [done]"]
+  I3["#3 建立共享 API 契约、类型与前端 Mock [ready]"]
   I4["#4 实现数据库迁移、种子与演示会话 [blocked]"]
   I5["#5 实现物品发布、检索与公开留言 API [blocked]"]
   I6["#6 实现意向、预约确认与交接事务 API [blocked]"]
@@ -43,8 +43,8 @@ flowchart LR
   I10 --> I11
   I11 --> I12
   I12 --> I13
-  style I2 fill:#dbeafe,stroke:#2563eb,stroke-width:2px
-  style I3 fill:#f3f4f6,stroke:#6b7280
+  style I2 fill:#dcfce7,stroke:#16a34a
+  style I3 fill:#dbeafe,stroke:#2563eb,stroke-width:2px
   style I4 fill:#f3f4f6,stroke:#6b7280
   style I5 fill:#f3f4f6,stroke:#6b7280
   style I6 fill:#f3f4f6,stroke:#6b7280
@@ -78,15 +78,32 @@ flowchart LR
 
 ## 当前队列
 
-读取时刻：`2026-09-27T01:52:04.358771+00:00`。
+读取时刻：`2026-09-27T02:11:49.679091+00:00`。
 
-- Ready：1（#2 工程初始化），未认领。
-- Blocked：11（必需任务 10 个、可选任务 1 个），原因是上游尚未完成。
-- Claimed、Stale Claim、Conflict、Review、Done：均为 0。
-- Invalid、Unknown：均为 0；已通过严格校验，没有自依赖、缺失节点或环。
-- 11 个原生 parent 链接和 16 条原生 blocked-by 依赖已回读核验；当前没有实现 PR 或 claim。
+Invalid: 0 | Unknown: 0 | Review: 0 | Claimed: 0 | Stale_Claim: 0 | Ready: 1 | Conflict: 0 | Blocked: 10 | Done: 1
 
-下一步安全动作：重新读取 #2 并认领，在独立 worktree 上完成工程初始化。#2 完成后解锁 #3；#3 完成后可开展数据库/会话 #4 与前端 #9/#10。
+### Ready
+
+- #3 建立共享 API 契约、类型与前端 Mock — unlocks #4, #9, #10
+
+### Blocked
+
+- #4 实现数据库迁移、种子与演示会话 — blocked by #3; unlocks #5, #6, #7, #8
+- #5 实现物品发布、检索与公开留言 API — blocked by #4; unlocks #11
+- #6 实现意向、预约确认与交接事务 API — blocked by #4; unlocks #11
+- #7 实现社区看板统计 API — blocked by #4; unlocks #11
+- #8 实现 LLM 发布辅助服务与失败降级 — blocked by #4; unlocks #11
+- #9 实现发现、详情、归档与看板页面 — blocked by #3; unlocks #11
+- #10 实现身份、发布与交接操作界面 — blocked by #3; unlocks #11
+- #11 完成真实前后端联调与验收测试 — blocked by #5, #6, #7, #8, #9, #10; unlocks #12
+- #12 交付运行说明、ER 图、技术简介与演示视频 — blocked by #11; unlocks #13
+- #13 可选：部署受控演示站并验证持久化 — blocked by #12
+
+### Done
+
+- #2 初始化全栈工程、开发命令与 CI — unlocks #3; PR merged; checks success
+
+验收证据：#2 由 PR #14 合并至 main `66a4186`，独立安装与完整检查通过，main CI 36287718963 成功。无远端部署。
 
 ## 修改边界与并行条件
 
@@ -102,7 +119,7 @@ flowchart LR
 
 初始没有需要持久记录的 conflicts_with 边，因为文件所有权已拆开。实际实现若出现共享文件、迁移、契约、lockfile、fixture 或部署环境竞争，必须暂停相关并行修改并记录冲突，不能通过虚构业务依赖掩盖冲突。
 
-Ready 只是满足依赖，不等于自动授权启动并行会话。每个独立会话最多认领一个任务，各自使用分支和 worktree；本次设置未启动任何开发会话。
+Ready 只是满足依赖，不等于自动授权启动并行会话。每个独立会话最多认领一个任务，各自使用分支和 worktree；本次已授权多会话执行，协调者按实时依赖依次唤醒执行会话。
 
 ## 实时调度与认领
 
@@ -143,4 +160,4 @@ scope: <当前 Issue 文件范围>
 
 真实 LLM 凭据尚未在本阶段配置：不影响 #8 的适配器和 stub 测试，但 #11 的真实调用验收必须满足；缺凭据应记外部阻塞。ER 图按 Chen 表示法交付6 张实体属性图、3 张局部实体联系图、1 张全局实体联系图，每张独立提供 SVG 源图及 PNG 导出；#12 须核对实际数据库迁移。视频是 #12 的实际交付物，脚本不能代替视频。#13 的托管资源未选定，不计入必需交付。
 
-所有必需子任务验收和 main/CI/材料证据一致后，才核销父任务清单并关闭 Epic。当前没有 CI 工作流或部署，应用尚未实现；CI 的建立属于 #2。
+所有必需子任务验收和 main/CI/材料证据一致后，才核销父任务清单并关闭 Epic。CI 已由 #2 建立并通过；尚无远端部署，业务功能仍以实时子任务验收为准。
