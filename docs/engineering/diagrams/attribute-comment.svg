@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1004.102355330306" height="484.5000000000001" viewBox="97.94882233484708 119.0 1004.102355330306 484.5000000000001" role="img" aria-labelledby="title desc">
 <title id="title">邻里闲置：留言实体属性图</title><desc id="desc">矩形实体、椭圆属性，标识属性加下划线。</desc>
-<rect width="1200" height="800" fill="white"/>
+<rect x="97.94882233484708" y="119.0" width="1004.102355330306" height="484.5000000000001" fill="white"/>
 <g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
-<text x="600" y="55" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 5  留言实体属性图</text>
 <line x1="600" y1="382" x2="600" y2="216" stroke="#111" stroke-width="2"/>
 <line x1="690" y1="447.752" x2="915.7" y2="517.349" stroke="#111" stroke-width="2"/>
 <line x1="510" y1="447.752" x2="284.3" y2="517.349" stroke="#111" stroke-width="2"/>
@@ -14,6 +13,5 @@
 <text x="981.051" y="537.5" font-size="23" text-anchor="middle" dominant-baseline="central">留言内容</text>
 <ellipse cx="218.949" cy="537.5" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
 <text x="218.949" y="537.5" font-size="23" text-anchor="middle" dominant-baseline="central">创建时间</text>
-<text x="600" y="755" font-size="22" text-anchor="middle" dominant-baseline="central">下划线表示标识属性；实体间引用见局部和全局实体联系图。</text>
 </g>
 </svg>

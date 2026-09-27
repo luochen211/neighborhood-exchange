@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="696" viewBox="70 162 1260 696" role="img" aria-labelledby="title desc">
 <title id="title">交易交接联系图</title><desc id="desc">Chen 局部实体联系图，连接线无箭头，1/n 为最大基数。</desc>
-<rect width="1400" height="1000" fill="white"/>
+<rect x="70" y="162" width="1260" height="696" fill="white"/>
 <g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
-<text x="700" y="60" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 9  交易交接联系图</text>
 <line x1="310" y1="260" x2="624" y2="260" stroke="#111" stroke-width="2"/>
 <text x="379.08" y="235" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
 <line x1="1090" y1="260" x2="776" y2="260" stroke="#111" stroke-width="2"/>
@@ -33,6 +32,5 @@
 <text x="1180" y="260" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">物品</text>
 <rect x="710" y="722" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
 <text x="800" y="760" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">交易记录</text>
-<text x="700" y="945" font-size="22" text-anchor="middle" dominant-baseline="central">一件物品可有多次取消历史，但最多一笔未取消交易；取消人为可选，限交易双方。</text>
 </g>
 </svg>
