@@ -1,6 +1,4 @@
 import {
-  createContext,
-  useContext,
   useEffect,
   useState,
   useCallback,
@@ -9,16 +7,8 @@ import {
 } from "react";
 import type { User } from "@neighborhood/contracts";
 import { configuredApi, errorMessage, ApiClientError, type Api } from "./api";
-const Context = createContext<{
-  api: Api;
-  user: User | null;
-  revision: number;
-  refresh: () => void;
-  identity: (user: User | null) => void;
-  choose: () => void;
-  choosing: boolean;
-  close: () => void;
-} | null>(null);
+import { AppContext as Context, useApp } from "./context";
+export { useApp } from "./context";
 export function AppProvider({
   children,
   providedApi,
@@ -30,16 +20,27 @@ export function AppProvider({
     [user, setUser] = useState<User | null>(null),
     [revision, setRevision] = useState(0),
     [choosing, setChoosing] = useState(false);
+  const profileRequest = useRef<AbortController | null>(null);
   useEffect(() => {
-    if (!providedApi) void configuredApi().then(setApi);
+    let active = true;
+    if (!providedApi)
+      void configuredApi().then((value) => {
+        if (active) setApi(value);
+      });
+    return () => {
+      active = false;
+    };
   }, [providedApi]);
   const refresh = useCallback(() => setRevision((n) => n + 1), []);
   useEffect(() => {
     if (!api) return;
     const controller = new AbortController();
+    profileRequest.current = controller;
     void api
       .me(controller.signal)
-      .then((r) => setUser(r.data))
+      .then((r) => {
+        if (!controller.signal.aborted) setUser(r.data);
+      })
       .catch(() => {});
     return () => controller.abort();
   }, [api]);
@@ -57,6 +58,7 @@ export function AppProvider({
         revision,
         refresh,
         identity: (u) => {
+          profileRequest.current?.abort();
           sessionStorage.removeItem("listing-draft");
           setUser(u);
           refresh();
@@ -69,11 +71,6 @@ export function AppProvider({
       {children}
     </Context.Provider>
   );
-}
-export function useApp() {
-  const context = useContext(Context);
-  if (!context) throw new Error("AppProvider missing");
-  return context;
 }
 export function useQuery<T>(
   loader: (signal: AbortSignal) => Promise<T>,

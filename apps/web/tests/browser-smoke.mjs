@@ -12,6 +12,7 @@ fs.mkdirSync(output, { recursive: true });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(process.env.WEB_URL || "http://127.0.0.1:5173");
+  await expect(page.locator(".mode-banner")).toContainText("Mock 演示");
   const shot = async (name) => {
     for (const [width, height, suffix] of [
       [1440, 900, "desktop"],
@@ -41,6 +42,7 @@ fs.mkdirSync(output, { recursive: true });
       .getByRole("button", { name: new RegExp(name) })
       .click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
+    await expect(page.locator(".identity")).toContainText(name);
   };
   await page.getByRole("heading", { name: "闲置电磁炉" }).waitFor();
   await shot("home");
@@ -105,6 +107,7 @@ fs.mkdirSync(output, { recursive: true });
   await page.getByText(/所有操作已关闭/).waitFor();
   await expect(page.getByLabel("留言内容")).toHaveCount(0);
   await shot("archive");
+  expect(errors).toEqual([]);
   console.log(
     JSON.stringify({
       result: "passed",

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
 import {
+  act,
   cleanup,
   render,
   screen,
@@ -169,5 +170,35 @@ it("keeps an unsent comment while refreshing on window focus", async () => {
     expect(
       (screen.getByLabelText("留言内容") as HTMLTextAreaElement).value,
     ).toBe("还没发送的留言"),
+  );
+});
+
+it("does not let a delayed initial identity overwrite a newly selected user", async () => {
+  const api = createApi(createClient({ fetch: createStatefulMock() }));
+  const users = await api.users();
+  let resolveProfile!: (value: Awaited<ReturnType<typeof api.me>>) => void;
+  api.me = vi.fn().mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        resolveProfile = resolve;
+      }),
+  );
+  render(
+    <MemoryRouter>
+      <App api={api} />
+    </MemoryRouter>,
+  );
+  fireEvent.click(screen.getByRole("button", { name: /选择演示身份/ }));
+  fireEvent.click(await screen.findByRole("button", { name: /邻居小林/ }));
+  await waitFor(() =>
+    expect(document.querySelector(".identity")?.textContent).toContain(
+      "邻居小林",
+    ),
+  );
+  await act(async () => {
+    resolveProfile({ data: users.data[1]! });
+  });
+  expect(document.querySelector(".identity")?.textContent).toContain(
+    "邻居小林",
   );
 });
