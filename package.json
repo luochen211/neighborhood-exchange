@@ -20,7 +20,9 @@
     "typecheck": "npm run build -w @neighborhood/contracts && npm run typecheck --workspaces",
     "test": "vitest run",
     "check": "npm run lint && npm run typecheck && npm test && npm run build",
-    "predev": "npm run build -w @neighborhood/contracts"
+    "predev": "npm run build -w @neighborhood/contracts",
+    "db:migrate": "npm run db:migrate -w @neighborhood/api",
+    "db:seed": "npm run db:seed -w @neighborhood/api"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

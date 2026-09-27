@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1113.0428688552208" height="592.4808487994069" viewBox="43.47856557238964 119.0 1113.0428688552208 592.4808487994069" role="img" aria-labelledby="title desc">
 <title id="title">邻里闲置：物品实体属性图</title><desc id="desc">矩形实体、椭圆属性，标识属性加下划线。</desc>
-<rect width="1200" height="800" fill="white"/>
+<rect x="43.47856557238964" y="119.0" width="1113.0428688552208" height="592.4808487994069" fill="white"/>
 <g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
-<text x="600" y="55" font-size="34" text-anchor="middle" dominant-baseline="central" font-weight="bold">图 3  物品实体属性图</text>
 <line x1="600" y1="382" x2="600" y2="216" stroke="#111" stroke-width="2"/>
 <line x1="645.725" y1="382" x2="803.661" y2="250.745" stroke="#111" stroke-width="2"/>
 <line x1="690" y1="398.048" x2="929.012" y2="339.75" stroke="#111" stroke-width="2"/>
@@ -38,6 +37,5 @@
 <text x="199.762" y="322.377" font-size="23" text-anchor="middle" dominant-baseline="central">更新时间</text>
 <ellipse cx="362.118" cy="222.305" rx="86" ry="31" fill="white" stroke="#111" stroke-width="1.8"/>
 <text x="362.118" y="222.305" font-size="23" text-anchor="middle" dominant-baseline="central">送出时间</text>
-<text x="600" y="755" font-size="22" text-anchor="middle" dominant-baseline="central">下划线表示标识属性；实体间引用见局部和全局实体联系图。</text>
 </g>
 </svg>

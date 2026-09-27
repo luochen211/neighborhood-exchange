@@ -1,9 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1440" viewBox="0 0 1500 1440" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1179" viewBox="50 117 1400 1179" role="img" aria-labelledby="title desc">
 <title id="title">邻里闲置：全局实体联系图</title><desc id="desc">Chen 表示法；六个实体，九个联系；实体用矩形，联系用菱形，连线没有箭头，标记 1 和 n。</desc>
-<rect width="1500" height="1440" fill="white"/>
+<rect x="50" y="117" width="1400" height="1179" fill="white"/>
 <g font-family="Songti SC, Noto Serif CJK SC, serif" fill="#111" stroke-linejoin="miter">
-<text x="750" y="57" font-size="38" text-anchor="middle" dominant-baseline="central" font-weight="bold">邻里闲置 · 全局实体联系图</text>
-<text x="750" y="106" font-size="24" text-anchor="middle" dominant-baseline="central">概念结构设计（Chen 表示法）</text>
 <line x1="180" y1="612" x2="180" y2="466" stroke="#111" stroke-width="2"/>
 <text x="155" y="579.88" font-size="25" text-anchor="middle" dominant-baseline="central">1</text>
 <line x1="180" y1="233" x2="180" y2="374" stroke="#111" stroke-width="2"/>
@@ -70,7 +68,5 @@
 <text x="750" y="885" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">留言</text>
 <rect x="660" y="1172" width="180" height="76" fill="white" stroke="#111" stroke-width="2.5"/>
 <text x="750" y="1210" font-size="29" text-anchor="middle" dominant-baseline="central" font-weight="bold">交易记录</text>
-<text x="750" y="1325" font-size="23" text-anchor="middle" dominant-baseline="central">1 / n 标注联系的最大基数；实体的属性见配套实体属性图。</text>
-<text x="750" y="1370" font-size="22" text-anchor="middle" dominant-baseline="central">“取消”为可选联系：一笔交易至多有一位取消人，未取消时没有取消人。</text>
 </g>
 </svg>
