@@ -123,7 +123,9 @@ it("preserves the manual draft through AI and publish failures, then clears it o
       "",
     ),
   );
-  expect(sessionStorage.getItem("listing-draft")).not.toContain("描述不能丢失");
+  expect(sessionStorage.getItem("listing-draft") ?? "").not.toContain(
+    "描述不能丢失",
+  );
 });
 it("retries a failed read without substituting mock success", async () => {
   const api = createApi(createClient({ fetch: createStatefulMock() }));

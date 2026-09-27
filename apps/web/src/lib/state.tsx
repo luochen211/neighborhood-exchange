@@ -107,7 +107,8 @@ export function useQuery<T>(
     return () => controller.abort();
   }, [key, params]);
   return {
-    ...(state.params === params ? state : {}),
+    data: state.params === params ? state.data : undefined,
+    error: state.params === params ? state.error : undefined,
     loading: state.key !== key && !(state.params === params && state.data),
     retry: () => setRetry((n) => n + 1),
   };
