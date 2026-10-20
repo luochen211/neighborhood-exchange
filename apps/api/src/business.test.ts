@@ -102,7 +102,7 @@ describe("real database HTTP acceptance", () => {
     });
     await f.app.close();
     f.db.sqlite.close();
-    const restarted = await buildApp({ config: f.config });
+    const restarted = await buildApp({ config: f.config, now: () => NOW + 20000 });
     try {
       expect(
         (await restarted.inject(`/api/v1/items/${id}`)).json().data.status,
